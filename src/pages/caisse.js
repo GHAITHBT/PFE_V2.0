@@ -19,6 +19,8 @@ const [val,setVal]=useState()
 const [Data, setData] = useState([]);
 const [DataFr, setDataFr] = useState([]);
 const [Remise, setRemise] = useState();
+const [Montant,setMontant]=useState(0)
+
 var Montantblabla;
 //const Date =`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
 const current = new Date();
@@ -35,12 +37,12 @@ const [ViewShow, SetViewShow] = useState(false)
     const handleViewShow = () => { SetViewShow(true) }
     const hanldeViewClose = () => { SetViewShow(false) }
 /***************************************************************************************/
-     const EditQuantité = async()=>{
+    /* const EditQuantité = async()=>{
         const Total= async()=>{
             /* for (let i = 0; i < Data.length-1; i++) {
                  // setTotalM(parseFloat(Data[i].Prix)+parseFloat(Data[i].Prix))  
                  setMontant(parseFloat(Montant)+parseFloat(Data[i].Prix))
-                  console.log("TOTAL",Data[i].QuantitéVN)}*/
+                  console.log("TOTAL",Data[i].QuantitéVN)}
               await   Data.forEach(element => {
                      Montantblabla = (parseFloat(parseFloat(Montantblabla)+parseFloat(element.Prix)))
                      console.log("TOTAL foreach",Montantblabla)})
@@ -55,7 +57,7 @@ const [ViewShow, SetViewShow] = useState(false)
     
     })
     handleDeleteCaisse()
-    }
+    }*/
      /***************************************************************************************/
      const ADDArch = async()=>{
         const url2 = 'http://169.254.131.15:5001/Archive'
@@ -138,6 +140,7 @@ const Calc_Total=()=>{
     Total=Total+parseFloat(element[3])
      console.log("Total",Total)
    }
+   setMontant(Total)
    handleViewShow()
 
 }
@@ -193,45 +196,16 @@ const handleDelete = () =>{
 return(
     <div>
          
-         <table className='table table-striped table-hover table-bordered'>
+         <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"grey"}}>
 
-    <tr style={{'height': '5px'}} >
-      <th style={{'width': '500px'}}><b>CodeArticle</b></th>
-      <td><input type="text" className='form-control' placeholder='Code Article' value={val} onChange={(e) => setCodeArticle(e.target.value)+GETDESC()}/></td>
-    </tr>
+   
     
-    <tr >
-      <th><b><span style={{fontFamily:"lucida grande",fontSize:"20px"}}> Quantité </span></b></th>
-      <td><input type="number" className='form-control' placeholder='Quantité ' value={val} onChange={(e) => setQuantitéVN(e.target.value)+GETDESC()+Getfour()}/></td>
-    </tr>
-    <tr c>
-      <th><b><span style={{color:"black",fontFamily:"lucida grande",fontSize:"20px"}}>Fournisseur</span></b></th>
-      <td>
-      <div className="form-group">
-    <strong>{DataFr.Fournisseur}</strong>
-    <select
-     name="{DataFr.name}"
-     onChange={(e)=>setFournisseur(e.target.value)+GetPrix()}
     
-    >
-      <option defaultValue>Select {DataFr.Fournisseur}</option>
-      {DataFr.map((item, index) => (
-        <option key={index} value={item.id}>
-          {item.fournisseur}
-        </option>
-      ))}
-    </select>
-  </div>
-  {console.log(Fournisseur)}
-  </td>
-    </tr>
+   
     <tr >
-      <th><b><span style={{color:"black",fontFamily:"lucida grande",fontSize:"20px"}}>Remise %</span></b></th>
-      <td><input type="text" className='form-control' placeholder='Remise % 'value={val} onChange={(e) => setRemise(e.target.value)+GetDataBS()+GetPrix()} /></td>
-    </tr>
-    <tr>
-    <table className='table table-striped table-hover table-bordered'>
-    <tbody style={{'height': '310px', 'overflow':'scroll', 'display': 'block'}}>
+        <td>
+    <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"grey"}}>
+         <tbody style={{'height': '550px', 'overflow':'scroll', 'display': 'block'}}>
 
                         <thead>
                         
@@ -261,23 +235,69 @@ return(
                                     
                                    
                                 </tr>
+                                
                             )}
                         </tbody>
                        </tbody> 
                     </table>
-                    <td align='center'><Button variant='dark' onClick={() => GetPrix()+Articles.push([CodeArticle,Fournisseur,Description,Prix,QuantitéVN])}><i className='fa fa-plu'></i>
+                    </td>
+                    <td align='center' >
+                    <table>
+ <tr style={{'height': '5px'}} >
+      <td width={'700px'} >
+    <input type="text" className='form-control' placeholder='Code Article' value={val} onChange={(e) => setCodeArticle(e.target.value)+GETDESC()}/></td>
+    </tr>
+    
+    <tr >
+      <td><input type="number" className='form-control' placeholder='Quantité ' value={val} onChange={(e) => setQuantitéVN(e.target.value)+GETDESC()+Getfour()}/></td>
+    </tr>
+    <tr c>
+      <td>
+      <div className="form-group">
+    <strong>{DataFr.Fournisseur}</strong>
+    <select
+     name="{DataFr.name}"
+     onChange={(e)=>setFournisseur(e.target.value)+GetPrix()}
+    
+    >
+      <option defaultValue>Fournisseur {DataFr.Fournisseur}</option>
+      {DataFr.map((item, index) => (
+        <option key={index} value={item.id}>
+          {item.fournisseur}
+        </option>
+      ))}
+    </select>
+  </div>
+  {console.log(Fournisseur)}
+  </td>
+    </tr>
+    <tr >
+      <td><input type="text" className='form-control' placeholder='Remise % 'value={val} onChange={(e) => setRemise(e.target.value)+GetDataBS()+GetPrix()} /></td>
+    </tr>
+                        
+                    </table>
+                    
+                    
+                   <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='dark' onClick={() => GetPrix()+Articles.push([CodeArticle,Fournisseur,Description,Prix,QuantitéVN])}><i className='fa fa-plu'></i>
                         Ajouter 
                     </Button>
-                    <Button style={{marginLeft:'20px'}} variant='success' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
+                   
+                    <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='primary' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
+                    Article
+                    </Button>
+                    <Button style={{marginLeft:'20px',width:"120px",height:"100px"}} variant='warning' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
+                    Retour Article
+                    </Button><br></br>
+                    <Button style={{marginLeft:'30px',width:"300px",height:"100px",marginTop:"25px"}} variant='success' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
                     PAYER
                     </Button>
                    
                     
                     <br/>
-                    <img src={logo} style={{height:'250px',width:'450px'}}></img>
                    
+                    
                     </td>
-                   
+
     </tr>
    
 </table>
@@ -311,7 +331,7 @@ return(
                                 </div>
         <b>MONTANT</b>
      <div className='form-group'>
-                                <input type="text" className='form-control'  defaultValue={Total} placeholder="Montant" readOnly/>
+                                <input type="text" className='form-control'  Value={Montant} placeholder="Montant" readOnly/>
                                 </div>
 <div>
             <input name='t1' type="text" className='form-control'readOnly placeholder="Rest"/></div>
