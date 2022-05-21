@@ -7,6 +7,8 @@ import {Caisse} from './pages/caisse';
 import {Clients} from './pages/Clients'
 import {Employee} from './pages/Liste_employé'
 import FeaturedInfo from './components/FeaturedInfo';
+import {Chart} from './pages/Charts'
+
 import {BL} from'./pages/Bon_Livraison'
 import {CM} from './pages/commande'
 import Login1 from './Login'
@@ -44,10 +46,8 @@ function App() {
   const test = false;
   return (
     <>
-    <div>
-   
-    </div>
-{console.log(localStorage.auth)
+    
+{
 }
       <Router>
       
@@ -62,7 +62,7 @@ function App() {
               <div>
               <Navbar />
               
-            <Route path='/Acceuil' exact component={FeaturedInfo} />
+            <Route path='/Acceuil' exact component={Chart} />
             <Route path='/Article' component={Article} />
                 <Route path='/Caisse' component={Caisse} />
             <Route path='/Client' component={Clients} />

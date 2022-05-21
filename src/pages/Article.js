@@ -3,6 +3,8 @@ import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
 import Toolbar from '../Toolbar/Toolbar';
 import ReactToPrint from "react-to-print";
+import BarChart from "../components/BarChart";
+import { UserData } from "./Data";
 
 export const Article = () => {
     let componentRef = useRef();
@@ -84,7 +86,8 @@ const [fullscreen, setFullscreen] = useState(true);
     const [CdArt, setCdArt] = useState("")
     const [Description, setDescription] = useState("")
     const [DescriptionBS, setDescriptionBS] = useState("")
-
+  
+    
     //Id for update record and Delete
     const [idFour,setIdFour] = useState("");
 
@@ -397,6 +400,7 @@ function GetFournisseurDataByRef  ()  {
   
     return (
         <div>
+
             <div>
                 
                 <div  style={{marginLeft: '390px',marginTop: '10px'}}>

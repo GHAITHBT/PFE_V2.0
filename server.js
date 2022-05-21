@@ -44,6 +44,15 @@ app.get('/users',(req,res)=>{
          res.send(data)
         })
         })
+        app.get('/Fournisseur',(req,res)=>{
+          db.collection('Fournisseur').find().toArray((err,data)=>{
+          if(err) 
+           res.send('Cannot fetch contacts')
+          else
+          
+           res.send(data)
+          })
+          })
     app.get('/usekjjhhr/:email',(req,res)=>{
       db.collection('user').find({email:req.params.email}).toArray((err,data)=>{
       if(err) 
@@ -126,7 +135,7 @@ app.get('/users',(req,res)=>{
             })
             })
             app.get('/Clients',(req,res)=>{
-              db.collection('Client').find().toArray((err,data)=>{
+              db.collection('users').find().toArray((err,data)=>{
               if(err) 
                res.send('Cannot fetch contacts')
               else

@@ -8,9 +8,9 @@ import Add from './pages/Add'
 import PrintComponent from './pages/print'
 import PrintBS from './pages/PRINTBS'
 import {Caisse} from './pages/caisse'
-import Clients from './pages/Clients'
+//import Clients from './pages/Clients'
 import Facture from'./pages/Facture'
-import BarChart from './pages/Charts'
+import Chart from './pages/Charts'
 import SideNav from './components/Sidebar'
 import FeaturedInfo from './components/FeaturedInfo'
 import {Article} from './pages/Article'
@@ -19,7 +19,7 @@ import EMPINTER from './EMPINTERFACE'
 import {BL} from'./pages/Bon_Livraison'
 ReactDOM.render(
   <React.StrictMode>
-<App/>
+<Caisse/>
  </React.StrictMode>,
   document.getElementById('root')
 );

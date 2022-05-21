@@ -9,6 +9,7 @@ import { Button } from 'bootstrap';
 import {useHistory} from "react-router-dom"
 function Navbar() {
   const history = useHistory()
+  const [screen, setScreen] = useState(window.innerWidth);
 
   const [sidebar, setSidebar] = useState(false);
 
@@ -22,11 +23,12 @@ function Navbar() {
             <FaIcons.FaBars style={{color:"white"}} onClick={showSidebar} />
           </Link>
           <ul>
-            <span style={{color:'white',fontSize:"38px",marginLeft:"550px",fontFamily:"Brush Script MT",fontWeight:"bold"}}>T.E.A</span>
-            <li>
-          <Link to='#' >
-          <AiIcons.AiOutlineLogout style={{marginLeft: '900px',color:"black"}}onClick={()=>history.push('/')}/>
-          <span style={{color:'black'}}>Log Out</span> </Link></li></ul>
+          <Link to='/Acceuil' className='menu-bars'>
+
+            <span style={{color:'white',fontSize:"38px",marginLeft:"80vh",fontFamily:"Brush Script MT",fontWeight:"bold"}}>T.E.A</span>
+           </Link> 
+          <AiIcons.AiOutlineLogout style={{marginLeft: '75vh',color:"white"}}onClick={()=>history.push('/')}/>
+          <span style={{color:'White'}} onClick={()=>history.push('/')}>Log Out</span> </ul>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>

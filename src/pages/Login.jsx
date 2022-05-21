@@ -30,6 +30,7 @@ const handleChange = e => {
 	const formSubmitter = e => {
 		e.preventDefault();
 		setsuccessMessage('');
+		localStorage.setItem('username',user.fullname)
 		
 		// setsuccessMessage('Successfully Validated');
 		if(user.email==input.email|| user.password==input.password || user.Role=="Admin"){

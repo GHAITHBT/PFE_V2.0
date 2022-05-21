@@ -1,67 +1,66 @@
-import React from 'react'
-import { Pie} from 'react-chartjs-2'
+import React, { Component }  from 'react';
 
-//defaults.global.tooltips.enabled = false
-//defaults.global.legend.position = 'bottom'
+import { useState,useEffect } from "react";
+import { Table } from 'react-bootstrap';
+import "../App.css";
+import BarChart from "../components/BarChart";
+import LineChart from "../components/LineChart";
+import PieChart from "../components/PieChart";
+import { UserData } from "./Data";
+import axios from 'axios';
 
-const BarChart = () => {
+export const Chart=()=> {
+  const [Data, setData] = useState([]);
+  const GetEmployeeData = () => {
+    //here we will get all employee data
+    const url = 'http://169.254.131.15:5001/Article'
+    axios.get(url)
+        .then(response => {
+            setData(response.data)
+                console.log(Data)
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+  const [userData, setUserData] = useState({
+    labels: UserData.map((data) => data.Fournisseur),
+    datasets: [{
+        label: "Quantité stock",
+        data: UserData.map((data) => data.Qnt),
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0",],
+        borderColor: "black",
+        borderWidth: 2,
+      },
+    ],
+  });
+  useEffect(() => {
+    GetEmployeeData();
+   // GetFournisseurData()
+}, [])
+
+  // IF YOU SEE THIS COMMENT: I HAVE GOOD EYESIGHT
+
   return (
-    <div>
-      <Pie
-        data={{
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [
-            {
-              label: '# of votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1,
-            },
-            // {
-            //   label: 'Quantity',
-            //   data: [47, 52, 67, 58, 9, 50],
-            //   backgroundColor: 'orange',
-            //   borderColor: 'red',
-            // },
-          ],
-        }}
-        height={400}
-        width={600}
-        options={{
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-          legend: {
-            labels: {
-              fontSize: 25,
-            },
-          },
-        }}
-      />
+    
+    <div >
+      <div style={{ width: 300 }}>
+        <Table style={{marginLeft:"350px"}}>
+          <tr>
+        <td style={{marginLeft:"500px"}}><BarChart chartData={userData} /></td>
+      
+        <td style={{marginLeft:"300px"}}><LineChart chartData={userData} /></td></tr>
+        <tr><td style={{marginTop:"300px"}}><PieChart chartData={userData} /></td>
+        </tr>
+        </Table>
+      </div>
     </div>
-  )
+  );
 }
 
-export default BarChart

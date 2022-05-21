@@ -12,7 +12,7 @@ const caisse=[String]
 var Total=50
 const [Articles, setArticles] = useState([]);
 const [ID,setId]=useState()
-const [Four,setFour]=useState('')
+const [Four,setFour]=useState([])
 const [RowData, SetRowData] = useState([])
 const [Delete,setDelete] = useState(false)
 const [val,setVal]=useState()
@@ -20,22 +20,40 @@ const [Data, setData] = useState([]);
 const [DataFr, setDataFr] = useState([]);
 const [Remise, setRemise] = useState();
 const [Montant,setMontant]=useState(0)
+const [CAR, setCAR] = useState("");
+
 
 var Montantblabla;
 //const Date =`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
 
-
+var idtest=''
+var CodeA=''
 const [Description,setDescription]=useState()
-const [QuantitéVN, setQuantitéVN] = useState(0);
+const [ScreenSize,setScreenSize]=useState(0)
+
+const [QuantitéVN, setQuantitéVN] = useState("");
 const [TotalM, setTotalM] = useState(0);
-const [CodeArticle, setCodeArticle] = useState(0);
-const [Fournisseur, setFournisseur] = useState(0);
+const [CodeArticle, setCodeArticle] = useState("");
+const [Fournisseur, setFournisseur] = useState("Select Fournisseur");
 const [Prix,setPrix]=useState("")
 const [ViewShow, SetViewShow] = useState(false)
     const handleViewShow = () => { SetViewShow(true) }
     const hanldeViewClose = () => { SetViewShow(false) }
+    const [ViewARTShow, SetViewARTShow] = useState(false)
+    const handleARTViewShow = () => { SetViewARTShow(true) }
+    const hanldeViewARTClose = () => { SetViewARTShow(false) }
+    const [ViewQnt, SetQnt] = useState(false)
+    const handleQnt = () => { SetQnt(true) }
+    const hanldeQntClose = () => { SetQnt(false) }
+    const [ViewListFour, SetListFour] = useState(false)
+    const handleListFour = () => { SetListFour(true) }
+    const hanldeListFourClose = () => { SetListFour(false) }
+    const [ViewRetourA, SetRetourA] = useState(false)
+    const handleRetourA = () => { SetRetourA(true) }
+    const hanldeRetourAClose = () => { SetRetourA(false) }
+
 /***************************************************************************************/
     /* const EditQuantité = async()=>{
         const Total= async()=>{
@@ -58,6 +76,49 @@ const [ViewShow, SetViewShow] = useState(false)
     })
     handleDeleteCaisse()
     }*/
+    const GetArticles = () => {
+        //here we will get all employee data
+        const url = 'http://169.254.131.15:5001/Article'
+        axios.get(url)
+            .then(response => {
+                setData(response.data)
+                    console.log(Data)
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+    function GetArticlebyid ()  {
+        //here we will get all employee data
+        const url = `http://169.254.131.15:5001/Articlebyid/${idtest}`
+        axios.get(url)
+            .then(response => {
+                CodeA=response.data.CodeArticle
+               GetFournisseurData()
+            })
+           
+        }
+        function GetFournisseurData  ()  {
+            //here we will get all employee data
+            const url = `http://169.254.131.15:5001/Fournisseur/`+CodeA
+            axios.get(url)
+                .then(response => {
+                    const result = response.data;
+                    setFour(result)
+                        console.log('url is ',url)
+                        console.log('car in req',CAR)
+                    console.log('Fournisseur called')
+                    setCodeArticle(result.CodeArticle)
+                   
+                        
+                    
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                
+        }
      /***************************************************************************************/
      const ADDArch = async()=>{
         const url2 = 'http://169.254.131.15:5001/Archive'
@@ -137,7 +198,7 @@ const GetDataBS = async () => {
 const Calc_Total=()=>{
    for (let index = 0; index < Articles.length; index++) {
     const element = Articles[index];
-    Total=Total+parseFloat(element[3])
+    Total=Total+parseFloat(element[3])*parseInt(element[4])
      console.log("Total",Total)
    }
    setMontant(Total)
@@ -193,19 +254,21 @@ const handleDelete = () =>{
     console.log(CodeArticle);
     Getfour();
   }, [CodeArticle]);*/
-return(
-    <div>
-         
-         <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"grey"}}>
+  useEffect(() => {
+    GetArticles();
+    setScreenSize(window.innerHeight)
 
-   
-    
-    
-   
+   // GetFournisseurData()
+}, [])
+
+return(
+    <div className='table-responsive' style={{height:"100vh",overflow:"auto"}}>
+         
+         <table className='table table-striped table-hover table-bordered' style={{overflow:'auto',height:"100vh"}}>
     <tr >
         <td>
-    <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"grey"}}>
-         <tbody style={{'height': '550px', 'overflow':'scroll', 'display': 'block'}}>
+    <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"#E5E5E5"}}>
+         <tbody style={{'height': "70vh" , 'overflow':'scroll', 'display': 'block'}}>
 
                         <thead>
                         
@@ -216,8 +279,10 @@ return(
                                 <th><b>Description</b></th>
                                 <th style={{'width': '122px'}}><b>Prix</b> </th>
                                 <th style={{'width': '122px'}}><b>Quantité</b></th>
+                                <th>Remise</th>
                             </tr>
                         </thead>
+                        
                    <tbody>
 
                             {Articles?.map((item) =>
@@ -227,7 +292,7 @@ return(
                                     <td>{item[2]}</td>
                                     <td>{item[3]}</td>
                                     <td>{item[4]}</td>
-                                    
+                                    <td>{item[5]} %</td>
                                     
                                 
                             
@@ -240,27 +305,30 @@ return(
                         </tbody>
                        </tbody> 
                     </table>
+                    <p style={{color:'black',fontSize:"77px",marginLeft:"200px",fontFamily:"Brush Script MT",fontWeight:"bold"}}>T.E.A</p>
+                    <b style={{marginLeft:"200px"}}>Touihri Equipement Auto</b>
                     </td>
                     <td align='center' >
                     <table>
  <tr style={{'height': '5px'}} >
-      <td width={'700px'} >
-    <input type="text" className='form-control' placeholder='Code Article' value={val} onChange={(e) => setCodeArticle(e.target.value)+GETDESC()}/></td>
+      <td width={'600px'} >
+    <input type="text" className='form-control' style={{backgroundColor:"#C2C2C2"}}placeholder='Code Article' value={CodeArticle} onChange={(e) => setCodeArticle(e.target.value)+GETDESC()}/></td>
     </tr>
     
     <tr >
-      <td><input type="number" className='form-control' placeholder='Quantité ' value={val} onChange={(e) => setQuantitéVN(e.target.value)+GETDESC()+Getfour()}/></td>
+      <td><input type="number" className='form-control'style={{backgroundColor:"#C2C2C2"}} placeholder='Quantité ' 
+      placeholderTextColor="black" value={QuantitéVN} onChange={(e) => setQuantitéVN(e.target.value)+GETDESC()+Getfour()}/></td>
     </tr>
-    <tr c>
+    <tr >
       <td>
       <div className="form-group">
     <strong>{DataFr.Fournisseur}</strong>
-    <select
+    <select style={{backgroundColor:"#C2C2C2",width:"600px",height:'38px'}}
      name="{DataFr.name}"
      onChange={(e)=>setFournisseur(e.target.value)+GetPrix()}
     
     >
-      <option defaultValue>Fournisseur {DataFr.Fournisseur}</option>
+      <option defaultValue={Fournisseur}>{Fournisseur} </option>
       {DataFr.map((item, index) => (
         <option key={index} value={item.id}>
           {item.fournisseur}
@@ -272,23 +340,23 @@ return(
   </td>
     </tr>
     <tr >
-      <td><input type="text" className='form-control' placeholder='Remise % 'value={val} onChange={(e) => setRemise(e.target.value)+GetDataBS()+GetPrix()} /></td>
+      <td><input type="text" className='form-control'style={{backgroundColor:"#C2C2C2"}} placeholder='Remise % 'value={Remise} onChange={(e) => setRemise(e.target.value)+GetDataBS()+GetPrix()} /></td>
     </tr>
                         
                     </table>
                     
                     
-                   <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='dark' onClick={() => GetPrix()+Articles.push([CodeArticle,Fournisseur,Description,Prix,QuantitéVN])}><i className='fa fa-plu'></i>
-                        Ajouter 
+                   <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='secondary' onClick={() => GetPrix()+setCodeArticle("")+setQuantitéVN("")+setFournisseur("Select Fournisseur")+setRemise("")+Articles.push([CodeArticle,Fournisseur,Description,Prix,QuantitéVN,Remise])}>
+                   <b style={{color:'black'}}> Ajouter </b>
                     </Button>
                    
-                    <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='primary' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
-                    Article
+                    <Button style={{marginLeft:'20px',width:"100px",height:"100px"}} variant='primary' onClick={() => {handleARTViewShow()}}>
+                    <b style={{color:'black'}}>Articles</b>
                     </Button>
-                    <Button style={{marginLeft:'20px',width:"120px",height:"100px"}} variant='warning' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
-                    Retour Article
+                    <Button style={{marginLeft:'20px',width:"125px",height:"100px"}} variant='warning' onClick={() => {handleRetourA()}}>
+                  <b style={{color:'black'}}>Retour Article</b>
                     </Button><br></br>
-                    <Button style={{marginLeft:'30px',width:"300px",height:"100px",marginTop:"25px"}} variant='success' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
+                    <Button style={{marginLeft:'30px',width:"365px",height:"100px",marginTop:"25px"}} variant='success' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
                     PAYER
                     </Button>
                    
@@ -299,9 +367,9 @@ return(
                     </td>
 
     </tr>
+    
    
 </table>
-                        
 
 <div className='model-box-view'>
 <Modal
@@ -320,11 +388,12 @@ return(
 
             <b>Payment par :</b>        
      <div>
-        <input type="radio" value="Espéce" name="gender" /> Espéce
-
-        <input type="radio" value="cheque" name="gender" /> Chèque
+        <input type="radio" value="Espéce" name="gender" style={{marginLeft:"20px"}}/> <b>Espéce </b>
+     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}/> <b>Chèque</b>
 
       </div >
+      <br/>
+
       <b>Numéro Chèque</b>
       <div className='form-group'>
                                 <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Numéro chèque" />
@@ -333,8 +402,7 @@ return(
      <div className='form-group'>
                                 <input type="text" className='form-control'  Value={Montant} placeholder="Montant" readOnly/>
                                 </div>
-<div>
-            <input name='t1' type="text" className='form-control'readOnly placeholder="Rest"/></div>
+
             <Button type='submit' className='btn btn-success mt-4' onClick={()=>ADDArch()}>Payer</Button>
 
         </div>
@@ -343,7 +411,140 @@ return(
         <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
     </Modal.Footer>
 </Modal>
-</div> </div>
+</div>
+
+   <div className='model-box-view'>
+    <Modal
+    show={ViewARTShow}
+    onHide={hanldeViewARTClose}
+    backdrop="static"
+    size='lg'
+    keyboard={false}>
+    <Modal.Header closeButton>
+        <Modal.Title>Liste Article</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+                <div className='table-responsive'>
+                    <table className='table table-striped table-hover table-bordered'>
+                        <thead>
+                            <tr>
+                                <th >Code Article</th>
+                                <th >Description</th>
+                                <th>Quantité Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Data?.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item.CodeArticle}</td>
+                                    <td>{item.Description}</td>
+                                 
+                                    <td> <Button id='aj' size='sm' variant='dark'
+                                     onClick={()=> {handleQnt( SetRowData(item),idtest=item._id,console.log('id',idtest),GetArticlebyid())}}>
+                                         Afficher </Button></td>
+                                      
+                                   
+
+
+                                   
+                                    
+                                </tr>
+                            )}
+                        </tbody>
+                        
+                    </table>
+                   
+                </div>
+    </Modal.Body>
+    <Modal.Footer>
+        <Button variant='secondary' onClick={hanldeViewARTClose}>Close</Button>
+    </Modal.Footer>
+     </Modal>
+   </div>        
+   <div className='model-box-view'>
+    <Modal
+    show={ViewQnt}
+    onHide={hanldeQntClose}
+    backdrop="static"
+    size='lg'
+    keyboard={false}>
+    <Modal.Header closeButton>
+        <Modal.Title>Liste Article</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+                <div className='table-responsive'>
+                    <table className='table table-striped table-hover table-bordered'>
+                    <thead>
+                            <tr>
+                                <th>Fournisseur</th>
+                                <th>Quantité</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Four.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item.fournisseur}</td>
+                                    <td>{item.Qnt}</td>
+                               </tr>
+                            )}
+                        </tbody>
+                        
+                    </table>
+                   
+                </div>
+    </Modal.Body>
+    <Modal.Footer>
+        <Button variant='secondary' onClick={hanldeQntClose}>Close</Button>
+    </Modal.Footer>
+     </Modal>
+   </div>        
+
+
+                
+   <div className='model-box-view'>
+                <Modal
+                    show={ViewRetourA}
+                    onHide={hanldeRetourAClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Retour Article</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                        <b>Code Article</b>
+      <div className='form-group'>
+                                <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Code Article" />
+                                </div>
+                                <b>Fournisseur</b>
+      <div className='form-group'>
+                                <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Fournisseur" />
+                                </div>
+                                <b>Quantité</b>
+      <div className='form-group'>
+                                <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Quantité" />
+                                </div>
+                                <br></br>
+                                <Button id='aj' size='sm' variant='dark'>
+                                         Confirmer</Button>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    
+
+                        <Button variant='secondary' onClick={hanldeRetourAClose}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                       
+                </div>
+  </div> 
+
+
+
+               
+
+
 
 
 )
