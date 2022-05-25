@@ -4,6 +4,8 @@ import axios from 'axios'
 import { ProductionQuantityLimits } from '@mui/icons-material';
 
 export const BL = () => {
+    var ipadresse="169.254.131.15"
+
     var CodeA=''
     var Qnt=0
     const current = new Date();
@@ -54,13 +56,81 @@ export const BL = () => {
     const [password, setpassword] = useState("")
     const [address, setaddress] = useState("")
     const [Role, setRole] = useState("")
+    const [filter, setFilter] = useState("");
 
     const [Delete,setDelete] = useState(false)
     //Id for update record and Delete
     const [id,setId] = useState("");
+     /************************************************************************************************************/
+    /************************************************************************************************************/
+    const FilterNUMBL = () => {
+        if(filter.length==0){
+            GetEmployeeData()
+        }
+        else{
+    setData(Data.filter(dt=>dt.NUMBL.includes(`${filter}`)))
+        console.log("data after filter",Data)
+        console.log("filter",filter)
+        }
+        
+    }
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterDateBl = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.DateBL.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterDateCreation = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterFournisseur = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.fournisseur.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterRéference = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
     const GetEmployeeData = () => {
         //here we will get all employee data
-        const url = 'http://169.254.131.15:5001/BLLIST'
+        const url = `http://${ipadresse}:5001/BLLIST`
         axios.get(url)
             .then(response => {
                 const result = response.data;
@@ -75,7 +145,7 @@ export const BL = () => {
     }
     const HandleQuantité = () => {
         //here we will get all employee data
-        const url = `http://169.254.131.15:5001/EDITQuant/${CodeA}/${fournisseur}`
+        const url = `http://${ipadresse}:5001/EDITQuant/${CodeA}/${fournisseur}`
         const Credentials = {Qnt }
         axios.put(url, Credentials)
             .then(response => {
@@ -91,7 +161,7 @@ export const BL = () => {
   
     
     const BLADD = () => {
-        const url = 'http://169.254.131.15:5001/add_BL'
+        const url = `http://${ipadresse}:5001/add_BL`
         const Credentials = { NUMBL,DateBL,fournisseur, Réference,Adresse, Téléphone,Articles,date}
         axios.post(url, Credentials)
             .then(response => {
@@ -107,7 +177,7 @@ export const BL = () => {
         }
         function GetFournisseurData  ()  {
             //here we will get all employee data
-            const url = `http://169.254.131.15:5001/Fournisseur/`+CodeA
+            const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
             axios.get(url)
                 .then(response => {
                     const result = response.data;
@@ -146,11 +216,16 @@ export const BL = () => {
     }, [])
     return (
         <div>
+            <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Bon De Livraison</p>
+            <hr></hr>
            
             <div  class="p-3 ">
-            <span style={{marginLeft: '550px',marginBottom:"50px"}}>  <Button variant='dark' onClick={() => { handlePostShowBL() }}><i className='fa fa-plu'></i>
-                    Bon Livraison
+            <span style={{marginLeft: '400px',marginBottom:"50px"}}>  <Button variant='dark' onClick={() => { handlePostShowBL() }}><i className='fa fa-plu'></i>
+                    <b>Bon Livraison</b>
                     </Button></span>
+                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <b >Actualiser</b>
+                    </Button>
                     <hr></hr> 
                     </div>
             <div>
@@ -158,11 +233,11 @@ export const BL = () => {
                     <table className='table table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
-                                <th>N°</th>
-                                <th>Date de bon de Livraison</th>
-                                <th>Date de creation</th>
-                                <th>Fournisseur</th>
-                                <th>Réference</th>
+                                <th>N°<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterNUMBL()} placeholder="Filter" /></th>
+                                <th>Date de bon de Livraison<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateBl()} placeholder="Filter" /></th>
+                                <th>Date de creation<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateCreation()} placeholder="Filter" /></th>
+                                <th>Fournisseur<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterFournisseur()} placeholder="Filter" /></th>
+                                <th>Réference<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterRéference()} placeholder="Filter" /></th>
                                 <th>Action</th>
                             </tr>
                         </thead>

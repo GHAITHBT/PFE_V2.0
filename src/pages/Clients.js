@@ -3,6 +3,8 @@ import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
 
 export const Clients = () => {
+    var ipadresse="169.254.131.15"
+
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
     const [ViewShow, SetViewShow] = useState(false)
@@ -37,7 +39,7 @@ export const Clients = () => {
     const [id,setId] = useState("");
     const GetClientData = () => {
         //here we will get all employee data
-        const url = 'http://169.254.131.15:5001/Clients'
+        const url = `http://${ipadresse}:5001/Clients`
         axios.get(url)
             .then(response => {
                 const result = response.data;
@@ -51,7 +53,7 @@ export const Clients = () => {
             })
     }
     const handleSubmite = () => {
-        const url = 'http://169.254.131.15:5001/Ajouter_Client'
+        const url = `http://${ipadresse}:5001/Ajouter_Client`
         const Credentials = { fullName, email, phoneNumber, address ,Débit,Crédit,Cheque}
         axios.post(url, Credentials)
             .then(response => {
@@ -67,7 +69,7 @@ export const Clients = () => {
     }
     
     const handleEdit = () =>{
-        const url = `http://169.254.131.15:5001/EDITClient/${id}`
+        const url = `http://${ipadresse}:5001/EDITClient/${id}`
         const Credentials = { fullName, email, phoneNumber, address,Débit,Crédit,Cheque}
         axios.put(url, Credentials)
             .then(response => {
@@ -83,7 +85,7 @@ export const Clients = () => {
     }
     //handle Delete Function 
     const handleDelete = () =>{
-        const url = `http://169.254.131.15:5001/Supp_Client/${id}`
+        const url = `http://${ipadresse}:5001/Supp_Client/${id}`
         axios.delete(url)
             .then(response => {
                 const result = response.data;
@@ -108,6 +110,8 @@ export const Clients = () => {
     return (
         <div class="p-3 mb-2 " >
             <div >
+            <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Liste des clients</p>
+            <hr></hr>
                 <div>
                     <Button variant='dark' onClick={() => { handlePostShow() }}><i className='fa fa-plu'></i>
                         Add New Employee

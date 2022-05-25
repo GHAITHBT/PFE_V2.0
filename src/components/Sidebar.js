@@ -19,13 +19,13 @@ export const SidebarData = [
   {
     title: 'Bon de laivraison',
     path: '/BL',
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
   {
     title: 'Bon de Commande',
     path: '/Commande',
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
   {
@@ -47,10 +47,5 @@ export const SidebarData = [
     cName: 'nav-text'
   },
  
-  {
-    title: 'Support',
-    path: '/support',
-    icon: <IoIcons.IoMdHelpCircle />,
-    cName: 'nav-text'
-  }
+  
 ];

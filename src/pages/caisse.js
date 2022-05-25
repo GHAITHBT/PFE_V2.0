@@ -8,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Send';
 import ImageButton from'react-image-button'
 import logo from './logo.png'
 export const Caisse =()=>{
+    var ipadresse="169.254.131.15"
+
 const caisse=[String]
 var Total=50
 const [Articles, setArticles] = useState([]);
@@ -78,7 +80,7 @@ const [ViewShow, SetViewShow] = useState(false)
     }*/
     const GetArticles = () => {
         //here we will get all employee data
-        const url = 'http://169.254.131.15:5001/Article'
+        const url = `http://${ipadresse}:5001/Article`
         axios.get(url)
             .then(response => {
                 setData(response.data)
@@ -91,7 +93,7 @@ const [ViewShow, SetViewShow] = useState(false)
         }
     function GetArticlebyid ()  {
         //here we will get all employee data
-        const url = `http://169.254.131.15:5001/Articlebyid/${idtest}`
+        const url = `http://${ipadresse}:5001/Articlebyid/${idtest}`
         axios.get(url)
             .then(response => {
                 CodeA=response.data.CodeArticle
@@ -101,7 +103,7 @@ const [ViewShow, SetViewShow] = useState(false)
         }
         function GetFournisseurData  ()  {
             //here we will get all employee data
-            const url = `http://169.254.131.15:5001/Fournisseur/`+CodeA
+            const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
             axios.get(url)
                 .then(response => {
                     const result = response.data;
@@ -121,7 +123,7 @@ const [ViewShow, SetViewShow] = useState(false)
         }
      /***************************************************************************************/
      const ADDArch = async()=>{
-        const url2 = 'http://169.254.131.15:5001/Archive'
+        const url2 = `http://${ipadresse}:5001/Archive`
         const Credentials = {Data,date}
        await axios.post(url2, Credentials)
 .then(response => {
@@ -133,7 +135,7 @@ const [ViewShow, SetViewShow] = useState(false)
     }
     /***************************************************************************************/
      const GETDESC=()=>{
-            const urlA = `http://169.254.131.15:5001/Article/${CodeArticle}`   
+            const urlA = `http://${ipadresse}:5001/Article/${CodeArticle}`   
             console.log("url description",urlA)
     axios.get(urlA)
       .then(response => {
@@ -145,7 +147,7 @@ const [ViewShow, SetViewShow] = useState(false)
       })}
       /***************************************************************************************/
       const ADD = async()=>{
-        const url2 = 'http://169.254.131.15:5001/add_CAISSE'
+        const url2 = `http://${ipadresse}:5001/add_CAISSE`
         const Credentials = {CodeArticle,Description, Fournisseur, Prix,QuantitéVN}
       await  axios.post(url2, Credentials)
 .then(response => {
@@ -156,7 +158,7 @@ const [ViewShow, SetViewShow] = useState(false)
     }
     /******************************************************************************************/
 const GetPrix = () => {
-       const url = `http://169.254.131.15:5001/CAISSE/${CodeArticle}/${Fournisseur}`  
+       const url = `http://${ipadresse}:5001/CAISSE/${CodeArticle}/${Fournisseur}`  
        console.log("Prix url",url) 
       axios.get(url)
         .then(response => {
@@ -168,7 +170,7 @@ const GetPrix = () => {
 }
 /****************************************************************************************************/
 const GetDataBS = async () => {
-    const urlg = 'http://169.254.131.15:5001/CAISSE'
+    const urlg =  `http://${ipadresse}:5001/CAISSE`
    await  axios.get(urlg)
     .then(response => {
         const result = response.data;
@@ -182,7 +184,7 @@ const GetDataBS = async () => {
 
      /*********************************************************************************************/   
      const Getfour = async () => {
-        const urlg = `http://169.254.131.15:5001/Fournisseur/`+CodeArticle
+        const urlg = `http://${ipadresse}:5001/Fournisseur/`+CodeArticle
        await  axios.get(urlg)
         .then(response => {
             const result = response.data;
@@ -229,7 +231,7 @@ const Click = async()=>{
     Total()
 }, [])*/
 const handleDeleteCaisse = () =>{
-    const url = `http://169.254.131.15:5001/CAISSEDELETE`
+    const url = `http://${ipadresse}:5001/CAISSEDELETE`
     axios.delete(url)
         .then(response => {
             const result = response.data;
@@ -241,7 +243,7 @@ const handleDeleteCaisse = () =>{
 }
 /****************************************************************************************************************/
 const handleDelete = () =>{
-    const url = `http://169.254.131.15:5001/Supp_Article_Caisse/${ID}`
+    const url = `http://${ipadresse}:5001/Supp_Article_Caisse/${ID}`
     axios.delete(url)
         .then(response => {
             const result = response.data;
@@ -256,19 +258,19 @@ const handleDelete = () =>{
   }, [CodeArticle]);*/
   useEffect(() => {
     GetArticles();
-    setScreenSize(window.innerHeight)
-
+    setScreenSize("window",window.innerHeight)
+console.log("window",window.innerHeight)
    // GetFournisseurData()
 }, [])
 
 return(
-    <div className='table-responsive' style={{height:"100vh",overflow:"auto"}}>
+    <div className='table-responsive' >
          
-         <table className='table table-striped table-hover table-bordered' style={{overflow:'auto',height:"100vh"}}>
+         <table className='table table-striped table-hover table-bordered' style={{marginLeft:"auto",marginRight:"auto"}}>
     <tr >
         <td>
-    <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"#E5E5E5"}}>
-         <tbody style={{'height': "70vh" , 'overflow':'scroll', 'display': 'block'}}>
+    <table className='table table-striped table-hover table-bordered'style={{backgroundColor:"#E5E5E5",marginLeft:"auto",marginRight:"auto"}}>
+         <tbody style={{'height': `400px` , 'overflow':'Scroll', 'display': 'block'}}>
 
                         <thead>
                         
@@ -277,8 +279,8 @@ return(
                                <th><b>Code Article</b></th>
                                 <th><b>fournisseur</b></th>
                                 <th><b>Description</b></th>
-                                <th style={{'width': '122px'}}><b>Prix</b> </th>
-                                <th style={{'width': '122px'}}><b>Quantité</b></th>
+                                <th ><b>Prix</b> </th>
+                                <th><b>Quantité</b></th>
                                 <th>Remise</th>
                             </tr>
                         </thead>
@@ -311,7 +313,7 @@ return(
                     <td align='center' >
                     <table>
  <tr style={{'height': '5px'}} >
-      <td width={'600px'} >
+      <td width={'auto'} >
     <input type="text" className='form-control' style={{backgroundColor:"#C2C2C2"}}placeholder='Code Article' value={CodeArticle} onChange={(e) => setCodeArticle(e.target.value)+GETDESC()}/></td>
     </tr>
     

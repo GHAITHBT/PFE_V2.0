@@ -3,6 +3,7 @@ import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
 
 export const CM = () => {
+    var ipadress='169.254.131.15'
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
     const [fournisseur, setfournisseur] = useState("")
@@ -16,6 +17,8 @@ export const CM = () => {
     const [CdArt, setCdArt] = useState("")
     const [Description, setDescription] = useState("")
     const [DescriptionBS, setDescriptionBS] = useState("")
+    const [NumCom, setNumCOM] = useState(0)
+
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
     const [ViewShow, SetViewShow] = useState(false)
@@ -50,13 +53,55 @@ export const CM = () => {
     const [password, setpassword] = useState("")
     const [address, setaddress] = useState("")
     const [Role, setRole] = useState("")
-
+    const [filter, setFilter] = useState("");
     const [Delete,setDelete] = useState(false)
     //Id for update record and Delete
     const [id,setId] = useState("");
+    /************************************************************************************************************/
+    /************************************************************************************************************/
+    const FilterNumCom = () => {
+        if(filter.length==0){
+            GetEmployeeData()
+        }
+        else{
+    setData(Data.filter(dt=>dt.NumCom.includes(`${filter}`)))
+        console.log("data after filter",Data.NumCom)
+        console.log("filter",filter)
+        }
+        
+    }
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterDate = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterEtat = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+
     const GetEmployeeData = () => {
         //here we will get all employee data
-        const url = 'http://169.254.160.216:5001/COMLIST'
+        const url = `http://${ipadress}:5001/COMLIST`
         axios.get(url)
             .then(response => {
                 const result = response.data;
@@ -71,8 +116,8 @@ export const CM = () => {
     }
     
     const COMADD = () => {
-        const url = 'http://169.254.160.216:5001/add_COM'
-        const Credentials = {fournisseur, Réference,Articles,date,Etat}
+        const url = `http://${ipadress}:5001/add_COM`
+        const Credentials = {NumCom,fournisseur, Réference,Articles,date,Etat}
         axios.post(url, Credentials)
             .then(response => {
                 const result = response.data;
@@ -90,14 +135,19 @@ export const CM = () => {
     console.log(ViewShow, RowData)
     useEffect(() => {
         GetEmployeeData();
+        setNumCOM( Math.floor(Math.random() * 9999999).toString())
     }, [])
     return (
         <div class="p-3 " >
-            
+            <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Liste des Commandes</p>
+            <hr></hr>
             <div>
-            <span style={{marginLeft: '550px',marginBottom:"50px"}}>  <Button variant='dark' onClick={() => { handlePostShowBL() }}><i className='fa fa-plu'></i>
-                Commande
+            <span style={{marginLeft: '400px',marginBottom:"50px"}}>  <Button variant='dark' onClick={() => { handlePostShowBL() }}><i className='fa fa-plu'></i>
+               <b>Nouveau</b> 
                     </Button></span>
+                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <b >Actualiser</b>
+                    </Button>
                    <hr></hr> 
                     </div>
             <div style={{marginTop:"30px"}}>
@@ -105,16 +155,16 @@ export const CM = () => {
                     <table className='table table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
-                                <th>Numéro de commande</th>
-                                <th>Date de creation</th>
-                                <th>Etat</th>
+                                <th>Numéro de commande<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterNumCom()} placeholder="Filter" /></th>
+                                <th>Date de creation<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDate()} placeholder="Filter" /></th>
+                                <th>Etat<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterEtat()} placeholder="Filter" /></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {Data.map((item) =>
                                 <tr key={item._id}>
-                                    <td>{item._id}</td>
+                                    <td>{item.NumCom}</td>
                                     <td>{item.date}</td>
                                     <td>{item.Etat}</td>
                                     <td style={{ minWidth: 190 }}>
@@ -305,7 +355,7 @@ export const CM = () => {
                                 <tr><th>Fournisseur</th></tr>
                                 <tr>
                                 <td> <input type="text" className='form-control' onChange={(a) => setfournisseur(a.target.value)} placeholder="Fournisseur" /></td>
-                                <td> <input type="text" className='form-control' onChange={(a) => setRéference(a.target.value)} placeholder="Description" /></td>
+                                <td> <input type="text" className='form-control' onChange={(a) => setRéference(a.target.value)} placeholder="Réference" /></td>
                               </tr> 
                                 
                             </Table>

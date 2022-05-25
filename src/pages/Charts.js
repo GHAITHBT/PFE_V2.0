@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
+import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 
 import { useState,useEffect } from "react";
-import { Table } from 'react-bootstrap';
 import "../App.css";
 import BarChart from "../components/BarChart";
 import LineChart from "../components/LineChart";
@@ -13,8 +13,9 @@ export const Chart=()=> {
   const [Data, setData] = useState([]);
   const GetEmployeeData = () => {
     //here we will get all employee data
-    const url = 'http://169.254.131.15:5001/Article'
+    const url = 'http://169.254.131.15:5001/Fournisseur'
     axios.get(url)
+    
         .then(response => {
             setData(response.data)
                 console.log(Data)
@@ -25,10 +26,10 @@ export const Chart=()=> {
         })
     }
   const [userData, setUserData] = useState({
-    labels: UserData.map((data) => data.Fournisseur),
+    labels: Data.map((data) => data.fournisseur),
     datasets: [{
         label: "Quantité stock",
-        data: UserData.map((data) => data.Qnt),
+        data: Data.map((data) => data.Qnt),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
@@ -40,6 +41,23 @@ export const Chart=()=> {
       },
     ],
   });
+  const data = {
+    labels: Data.map(o => o.fournisseur), // first change
+    datasets: [{
+      label: 'Quantité Stock par Fournisseur',
+      fill: false,
+      lineTension: 0.0,
+      backgroundColor:   [
+        "rgba(75,192,192,1)",
+        "#ecf0f1",
+        "#50AF95",
+        "#f3ba2f",
+        "#2a71d0",],
+      borderColor: 'rgb(41, 33, 116,0.5)',
+      pointHitRadius: 20,
+      data: Data.map(o => parseInt(o.Qnt)) // second change
+    }]
+  };
   useEffect(() => {
     GetEmployeeData();
    // GetFournisseurData()
@@ -50,14 +68,24 @@ export const Chart=()=> {
   return (
     
     <div >
-      <div style={{ width: 300 }}>
-        <Table style={{marginLeft:"350px"}}>
+      <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Acceuil</p>
+            <hr></hr>
+            <Button style={{marginLeft:'400px',width:"100px",}} variant='dark' >
+                    <b >Nouveau</b>
+                    </Button>
+                    
+                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <b >Actualiser</b>
+                    </Button>
+                    <hr></hr>
+      <div style={{ width: 800 }}>
+        <Table style={{marginLeft:"100px"}}>
           <tr>
-        <td style={{marginLeft:"500px"}}><BarChart chartData={userData} /></td>
+        <td ><BarChart style={{marginLeft:"1000px"}} chartData={data} /></td>
       
-        <td style={{marginLeft:"300px"}}><LineChart chartData={userData} /></td></tr>
-        <tr><td style={{marginTop:"300px"}}><PieChart chartData={userData} /></td>
-        </tr>
+        <td style={{marginLeft:"300px"}}><LineChart chartData={data} /></td>
+        <td style={{marginTop:"300px"}}><PieChart chartData={data} /></td></tr>
+        
         </Table>
       </div>
     </div>
