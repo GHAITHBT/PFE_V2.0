@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
+import { ProductionQuantityLimits } from '@mui/icons-material';
 
-export const CM = () => {
-    var ipadress='localhost'
+export const Fournisseur = () => {
+    var ipadresse="169.254.131.15"
+
+    var CodeA=''
+    var Qnt=0
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
     const [fournisseur, setfournisseur] = useState("")
@@ -12,13 +16,12 @@ export const CM = () => {
     const [PrixVente, setPrixVente] = useState("")
     const [Quantité, setQuantité] = useState("")
     const [Vente, setVente] = useState("")
-    const [idart, setidart] = useState("")
+    const [Four, setFour] = useState("")
     const [CodeArticle, setCodeArticle] = useState("")
+    const [CA_FR, setCA_FR] = useState("")
     const [CdArt, setCdArt] = useState("")
     const [Description, setDescription] = useState("")
     const [DescriptionBS, setDescriptionBS] = useState("")
-    const [NumCom, setNumCOM] = useState(0)
-
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
     const [ViewShow, SetViewShow] = useState(false)
@@ -26,7 +29,7 @@ export const CM = () => {
     const [Téléphone, setTéléphone] = useState(0);
     const [DataBS, setDataBS] = useState([]);
     const [DateBL, setDateBL] = useState();
-    const [Etat, setEtat] = useState();
+    const [NUMBL, setNUMBL] = useState();
     const [Articles, setArticles] = useState([]);
     const handleViewShow = () => { SetViewShow(true) }
     const hanldeViewClose = () => { SetViewShow(false) }
@@ -54,25 +57,39 @@ export const CM = () => {
     const [address, setaddress] = useState("")
     const [Role, setRole] = useState("")
     const [filter, setFilter] = useState("");
+
     const [Delete,setDelete] = useState(false)
     //Id for update record and Delete
     const [id,setId] = useState("");
+     /************************************************************************************************************/
     /************************************************************************************************************/
-    /************************************************************************************************************/
-    const FilterNumCom = () => {
+    const FilterNUMBL = () => {
         if(filter.length==0){
             GetEmployeeData()
         }
         else{
-    setData(Data.filter(dt=>dt.NumCom.includes(`${filter}`)))
-        console.log("data after filter",Data.NumCom)
+    setData(Data.filter(dt=>dt.NUMBL.includes(`${filter}`)))
+        console.log("data after filter",Data)
         console.log("filter",filter)
         }
         
     }
 /************************************************************************************************************/
 /********************************************************************************************************/
-const FilterDate = () => {
+const FilterDateBl = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.DateBL.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
+const FilterDateCreation = () => {
     if(filter.length==0){
         GetEmployeeData()
     }
@@ -85,12 +102,12 @@ setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
 }
 /************************************************************************************************************/
 /********************************************************************************************************/
-const FilterEtat = () => {
+const FilterFournisseur = () => {
     if(filter.length==0){
         GetEmployeeData()
     }
     else{
-setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
+setData(Data.filter(dt=>dt.fournisseur.includes(`${filter}`)))
     console.log("data after filter",Data)
     console.log("filter",filter)
     }
@@ -98,10 +115,22 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
 }
 /************************************************************************************************************/
 /********************************************************************************************************/
-
+const FilterRéference = () => {
+    if(filter.length==0){
+        GetEmployeeData()
+    }
+    else{
+setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
+    console.log("data after filter",Data)
+    console.log("filter",filter)
+    }
+    
+}
+/************************************************************************************************************/
+/********************************************************************************************************/
     const GetEmployeeData = () => {
         //here we will get all employee data
-        const url = `http://${ipadress}:5001/COMLIST`
+        const url = `http://${ipadresse}:5001/Fournisseur`
         axios.get(url)
             .then(response => {
                 const result = response.data;
@@ -114,10 +143,26 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                 console.log(err)
             })
     }
+    const HandleQuantité = () => {
+        //here we will get all employee data
+        const url = `http://${ipadresse}:5001/EDITQuant/${CodeA}/${fournisseur}`
+        const Credentials = {Qnt }
+        axios.put(url, Credentials)
+            .then(response => {
+                const result = response.data;
+                const { status, message } = result;
+
+                    console.log('function called')
+                    console.log(result)
+                
+            })
+          
+    }
+  
     
-    const COMADD = () => {
-        const url = `http://${ipadress}:5001/add_COM`
-        const Credentials = {NumCom,fournisseur, Réference,Articles,date,Etat}
+    const BLADD = () => {
+        const url = `http://${ipadresse}:5001/add_BL`
+        const Credentials = { NUMBL,DateBL,fournisseur, Réference,Adresse, Téléphone,Articles,date}
         axios.post(url, Credentials)
             .then(response => {
                 const result = response.data;
@@ -130,43 +175,81 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                 console.log(err)
             })
         }
-   
-    
+        function GetFournisseurData  ()  {
+            //here we will get all employee data
+            const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
+            axios.get(url)
+                .then(response => {
+                    const result = response.data;
+                    setFour(result)
+                       
+                   
+                        
+                    
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                
+        }
+        /************************************************************************************* */
+        const validé=()=>{
+            BLADD()
+            for (let index = 0; index < Articles.length; index++) {
+                const element = Articles[index];
+                CodeA=element[0]
+                GetFournisseurData()
+                
+               
+                Qnt=element[3]
+                console.log(element[0])
+                console.log(element[3])
+                
+                HandleQuantité()
+            }
+           
+           
+        }
     console.log(ViewShow, RowData)
     useEffect(() => {
         GetEmployeeData();
-        setNumCOM( Math.floor(Math.random() * 9999999).toString())
     }, [])
     return (
-        <div class="p-3 " >
-            <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Liste des Commandes</p>
+        <div>
+            <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Bon De Livraison</p>
             <hr></hr>
-            <div>
+           
+            <div  class="p-3 ">
             <span style={{marginLeft: '400px',marginBottom:"50px"}}>  <Button variant='dark' onClick={() => { handlePostShowBL() }}><i className='fa fa-plu'></i>
-               <b>Nouveau</b> 
+                    <b>Bon Livraison</b>
                     </Button></span>
                     <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
                     <b >Actualiser</b>
                     </Button>
-                   <hr></hr> 
+                    <hr></hr> 
                     </div>
-            <div style={{marginTop:"30px"}}>
+            <div>
                 <div className='table-responsive'>
                     <table className='table table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
-                                <th>Numéro de commande<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterNumCom()} placeholder="Filter" /></th>
-                                <th>Date de creation<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDate()} placeholder="Filter" /></th>
-                                <th>Etat<br/><input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterEtat()} placeholder="Filter" /></th>
+                                <th>N°<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterNUMBL()} placeholder="Filter" /></th>
+                                <th>Date de bon de Livraison<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateBl()} placeholder="Filter" /></th>
+                                <th>Date de creation<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateCreation()} placeholder="Filter" /></th>
+                                <th>Fournisseur<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterFournisseur()} placeholder="Filter" /></th>
+                                <th>Réference<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterRéference()} placeholder="Filter" /></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {Data.map((item) =>
                                 <tr key={item._id}>
-                                    <td>{item.NumCom}</td>
+                                    <td>{item.NUMBL}</td>
+                                    <td>{item.DateBL}</td>
                                     <td>{item.date}</td>
-                                    <td>{item.Etat}</td>
+                                    <td>{item.fournisseur}</td>
+
+                                    <td>{item.Réference}</td>
                                     <td style={{ minWidth: 190 }}>
                                         <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>ouvrir</Button>|
                                         <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>
@@ -188,7 +271,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                     size={"lg"}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Bon De Commande</Modal.Title>
+                        <Modal.Title>Bon De Livraison</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -197,29 +280,49 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                 
                        <tr>
                            <td> 
-                              <b> Numéro de commande </b>
-                           <input type="text" className='form-control'  placeholder="N° " value={RowData.NumCom} readOnly/>
+                              <b> Numéro de bon </b>
+                           <input type="text" className='form-control'  placeholder="N° " value={RowData.NUMBL} readOnly/>
                        
                             </td>
                             <td> 
                                 <b>Date</b>
-                           <input type="text" className='form-control'  placeholder="Date"value={RowData.date}readOnly />
+                           <input type="text" className='form-control'  placeholder="Date"value={RowData.DateBL}readOnly />
                        
                             </td>
                             </tr>
                             
-                      
+                            <td colSpan={2}>
+                           <b> Fournisseur</b>
+                            <input type="text" className='form-control' value={RowData.fournisseur}  placeholder="Fournisseur" readOnly />
+                            </td>
+                       <tr>
                        
+                          
+                            <td colSpan={2}>
+                              <b>  Réference </b>
+                           <input type="email" className='form-control' value={RowData.Réference}  placeholder="Réference" readOnly />
+                           </td>
+                       </tr>
+                       <tr>
+                           
+                           <td colSpan={2}>
+                              <b> Adresse</b>
+                           <input type="email" className='form-control'  value={RowData.Adresse} placeholder="Adresse" readOnly />
+                    </td>
+                   </tr>
+                       <tr>
+                           
+                           <td colSpan={2}> <b>Numéro Téléphone</b>
+                           <input type="text" className='form-control'  value={RowData.Téléphone} placeholder="Téléphone"readOnly /></td>
+                           </tr>
                            </Table>
                            <Table>
                             <thead>
                             <tr>
                                 <th >code Article</th>
                                 <th >Description</th>
-                                <th >Fournisseur</th>
-                                <th>Prix </th>
+                                <th>Prix Achat</th>
                                 <th>Quantité </th>
-                                
                             </tr>
                         </thead>
                                 <tbody>
@@ -227,19 +330,12 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                 <tr key={item._id}>
                                     <td>{item[0]}</td>
                                     <td>{item[1]}</td>
-                                    <td>{item[4]}</td>
                                     <td>{item[2]}</td>
                                     <td>{item[3]}</td>
-                                    
-                                    
-                                    
                                 </tr>
                             )}
                         </tbody>
-                           
-                        
                         </Table>
-                            
                             {
                                 Delete && (
                                     <Button type='submit' className='btn btn-danger mt-4' >Delete Employee</Button>
@@ -311,11 +407,11 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                         <div>
                             <div className='form-group'>
                                 <label>Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData._id}/>
+                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
                             </div>
                             <div className='form-group mt-3'>
                                 <label>Email</label>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.date} readOnly/>
+                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
                             </div>
                             <div className='form-group mt-3'>
                                 <label>Number</label>
@@ -347,31 +443,54 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                   //  fullscreen={true}     
                     size={"lg"}                  >
                     <Modal.Header closeButton>
-                        <Modal.Title>Bon de Commande</Modal.Title>
+                        <Modal.Title>Bon de Livraison</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
-                        <Table>
-                                <tr><th>Fournisseur</th></tr>
-                                <tr>
-                                <td> <input type="text" className='form-control' onChange={(a) => setfournisseur(a.target.value)} placeholder="Fournisseur" /></td>
-                                <td> <input type="text" className='form-control' onChange={(a) => setRéference(a.target.value)} placeholder="Réference" /></td>
-                              </tr> 
+                        <Table>         
+                            <tr>
+                                <td> 
+                                <input type="text" className='form-control' onChange={(e) => setNUMBL(e.target.value)} placeholder="N° " />
+                            
+                                 </td>
+                                 <td> 
+                                <input type="text" className='form-control' onChange={(e) => setDateBL(e.target.value)} placeholder="Date" />
+                            
+                                 </td>
+                                 </tr>
+                                 <td colSpan={2}>
+                                 <input type="text" className='form-control' value={fournisseur} onChange={(a) => setfournisseur(a.target.value)} placeholder="Fournisseur" />
+                                 </td>
+                            <tr>
+                            
+                               
+                                 <td colSpan={2}>
+                                <input type="email" className='form-control' value={Réference} onChange={(a) => setRéference(a.target.value)} placeholder="Réference" />
+                                </td>
+                            </tr>
+                            <tr>
                                 
-                            </Table>
-                        
+                                <td colSpan={2}>
+                                <input type="email" className='form-control'  onChange={(a) => setAdresse(a.target.value)} value={Adresse} placeholder="Adresse" />
+                         </td>
+                        </tr>
+                            <tr>
+                                
+                                <td colSpan={2}> <input type="text" className='form-control' onChange={(a) => setTéléphone(a.target.value)} value={Téléphone} placeholder="Téléphone" /></td>
+                                </tr>
+                                
+                                </Table>
                                 <Table>
                                 <tr><th>Article</th></tr>
                                 <tr>
                                 <td> <input type="text" className='form-control' onChange={(a) => setCodeArticle(a.target.value)} placeholder="Code Article" /></td>
                                 <td> <input type="text" className='form-control' onChange={(a) => setDescription(a.target.value)} placeholder="Description" /></td>
                                 <td> <input type="text" className='form-control' onChange={(a) => setPrixAchat(a.target.value)} placeholder="Prix Achat" /></td>
-                                
                                 <td> <input type="text" className='form-control' onChange={(a) => setQuantité(a.target.value)} placeholder="
                                 Quantité" /></td>
                                 </tr>
                                 <tr>
-                                <td colSpan={4} align='right'> <Button id='aj' size='sm' variant='dark' onClick={()=> {Articles.push([CodeArticle,Description,PrixAchat,Quantité,fournisseur])}}>Ajouter</Button></td>
+                                <td colSpan={4} align='right'> <Button id='aj' size='sm' variant='dark' onClick={()=> {Articles.push([CodeArticle,Description,PrixAchat,Quantité])}}>Ajouter</Button></td>
                                 {console.log('testing articles',Articles)}
                                 
                                 
@@ -382,7 +501,6 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                             <tr>
                                 <th >code Article</th>
                                 <th >Description</th>
-                                <th>Fournisseur</th>
                                 <th>Prix Achat</th>
                                 <th>Quantité </th>
                                 
@@ -393,29 +511,21 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                 <tr key={item._id}>
                                     <td>{item[0]}</td>
                                     <td>{item[1]}</td>
-                                    <td>{item[4]}</td>
                                     <td>{item[2]}</td>
                                     <td>{item[3]}</td>
-
                                     
                                     
                                 </tr>
                             )}
                         </tbody>
-                            
+                           
+                        
                         </table>
-                        <div className='form-group mt-3'>
-                            <b> Etat</b> : <br></br>
-                                <input type="radio" value="En Cours"  style={{marginLeft:"150px"}} onChange={(e) => setEtat(e.target.value)}/><b>Commande en Cours</b> 
-                                <input type="radio" value="Expidée"  style={{marginLeft:"20px"}} onChange={(e) => setEtat(e.target.value)}/><b>Commande Expidée</b>
-
-                            </div>
+                            <Button type='submit' className='btn btn-success mt-4' onClick={validé} > Valider</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button type='submit' className='btn btn-success mt-4' onClick={COMADD}> Valider</Button>
-
-                        <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Close</Button>
+                        <Button variant='secondary' onClick={hanldePostCloseBL}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 </div>

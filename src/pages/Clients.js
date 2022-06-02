@@ -113,9 +113,13 @@ export const Clients = () => {
             <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Liste des clients</p>
             <hr></hr>
                 <div>
-                    <Button variant='dark' onClick={() => { handlePostShow() }}><i className='fa fa-plu'></i>
-                        Add New Employee
+                    <Button variant='dark' style={{marginLeft:'500px',width:"100px",}}onClick={() => { handlePostShow() }}><i className='fa fa-plu'></i>
+                        <b>Nouveau</b>
                     </Button>
+                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <b >Actualiser</b>
+                    </Button>
+                    <hr></hr>
                 </div>
             </div>
             <div >
@@ -224,11 +228,12 @@ export const Clients = () => {
                                 <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" />
                             </div>
                             
-                            <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmite}>Ajouter Client</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostClose}>Close</Button>
+                    <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmite}>Ajouter </Button>
+
+                        <Button variant='warning' onClick={hanldePostClose}style={{marginTop:"25px"}}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

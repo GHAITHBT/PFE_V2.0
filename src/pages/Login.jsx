@@ -53,29 +53,29 @@ const handleChange = e => {
 				<div className="container-login100" style={{ backgroundImage: 'url("images/test.jpg")' }}>
 					<div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
 						<form className="login100-form validate-form" onSubmit={formSubmitter}>
-							<span className="login100-form-title p-b-49">Login</span>
+							<span className="login100-form-title p-b-49">Connexion</span>
 							{errorMessage.length > 0 && <div style={{ marginBottom: '10px', color: 'red' }}>{errorMessage}</div>}
 							{successMessage.length > 0 && (
 								<div style={{ marginBottom: '10px', color: 'green' }}>{successMessage}</div>
 							)}
 							<div className="wrap-input100 validate-input m-b-23" data-validate="email is required">
-								<span className="label-input100">Email</span>
+								<span className="label-input100">Nom utilisateur</span>
 								<input
 									className="input100"
 									type="text"
 									name="email"
-									placeholder="Type your username"
+									placeholder="tapez votre nom d'utilisateur"
 									onChange={handleChange}
 								/>
 								<span className="focus-input100" data-symbol="" />
 							</div>
 							<div className="wrap-input100 validate-input" data-validate="Password is required">
-								<span className="label-input100">Password</span>
+								<span className="label-input100">Mot de passe</span>
 								<input
 									className="input100"
 									type="password"
 									name="password"
-									placeholder="Type your password"
+									placeholder="Tapez votre mot de passe"
 									onChange={handleChange}
 								/>
 								<span className="focus-input100" data-symbol="" />
@@ -83,7 +83,7 @@ const handleChange = e => {
 							<div className="container-login100-form-btn">
 								<div className="wrap-login100-form-btn">
 									<div className="login100-form-bgbtn" />
-									<button className="login100-form-btn" style={{ backgroundImage: 'url("images/test.jpg")' }}>Login</button>
+									<button className="login100-form-btn" style={{ backgroundImage: 'url("images/test.jpg")' }}>Connexion</button>
 								</div>
 							</div>
 						

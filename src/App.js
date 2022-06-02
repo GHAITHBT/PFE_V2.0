@@ -12,7 +12,7 @@ import {Chart} from './pages/Charts'
 import {BL} from'./pages/Bon_Livraison'
 import {CM} from './pages/commande'
 import Login1 from './Login'
-/* <Router>
+import { Facture } from './pages/Facture';/* <Router>
       
       <Route path='/' exact component={Login1} />
 
@@ -61,9 +61,11 @@ function App() {
        
               <div>
               <Navbar />
-              
+
             <Route path='/Acceuil' exact component={Chart} />
             <Route path='/Article' component={Article} />
+            <Route path='/Facture' component={Facture} />
+
                 <Route path='/Caisse' component={Caisse} />
             <Route path='/Client' component={Clients} />
             <Route path='/Employer' component={Employee} />

@@ -16,7 +16,7 @@ export const SidebarData = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
-  {
+ {
     title: 'Bon de laivraison',
     path: '/BL',
     icon: <IoIcons.IoIosPaper />,
@@ -28,6 +28,13 @@ export const SidebarData = [
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },
+  {
+    title: 'Facture',
+    path: '/Facture',
+    icon: <IoIcons.IoIosPaper />,
+    cName: 'nav-text'
+  },
+  
   {
     title: 'Employer',
     path: '/Employer',

@@ -53,6 +53,15 @@ app.get('/users',(req,res)=>{
            res.send(data)
           })
           })
+          app.get('/Factures',(req,res)=>{
+            db.collection('Facture').find().toArray((err,data)=>{
+            if(err) 
+             res.send('Cannot fetch contacts')
+            else
+            
+             res.send(data)
+            })
+            })
     app.get('/usekjjhhr/:email',(req,res)=>{
       db.collection('user').find({email:req.params.email}).toArray((err,data)=>{
       if(err) 
@@ -206,6 +215,15 @@ app.get('/users',(req,res)=>{
         res.send('Contact added')
     })
     })
+    app.post('/Ajout_Facture',(req,res)=>{
+      let newContact = req.body
+      db.collection('Facture').insert(newContact,(err,data)=>{
+      if(err){
+      res.send('cannot add new contact')}
+      else
+      res.send('Contact added')
+  })
+  })
     app.post('/add_BL',(req,res)=>{
       let newContact = req.body
       db.collection('Bon de Livraison').insert(newContact,(err,data)=>{

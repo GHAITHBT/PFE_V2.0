@@ -521,11 +521,11 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                            
                         
                         </table>
-                            <Button type='submit' className='btn btn-success mt-4' onClick={validé} > Valider</Button>
-                        </div>
+                            </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostCloseBL}>Close</Button>
+                    <Button type='submit' className='btn btn-success mt-4' onClick={validé} > Valider</Button>
+                    <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 </div>

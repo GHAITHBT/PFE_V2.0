@@ -8,8 +8,10 @@ import DeleteIcon from '@mui/icons-material/Send';
 import ImageButton from'react-image-button'
 import logo from './logo.png'
 export const Caisse =()=>{
-    var ipadresse="169.254.131.15"
-
+    var ipadresse="localhost"
+    var CodeA=""
+    var Qnt=0
+    var fournisseur=""
 const caisse=[String]
 var Total=50
 const [Articles, setArticles] = useState([]);
@@ -23,7 +25,6 @@ const [DataFr, setDataFr] = useState([]);
 const [Remise, setRemise] = useState();
 const [Montant,setMontant]=useState(0)
 const [CAR, setCAR] = useState("");
-
 
 var Montantblabla;
 //const Date =`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
@@ -124,14 +125,28 @@ const [ViewShow, SetViewShow] = useState(false)
      /***************************************************************************************/
      const ADDArch = async()=>{
         const url2 = `http://${ipadresse}:5001/Archive`
-        const Credentials = {Data,date}
+        const Credentials = {Articles,Montant,date}
        await axios.post(url2, Credentials)
 .then(response => {
     const result = response.data;
     const { status, message, data } = result;
-    
     })
-    handleDeleteCaisse()
+    }
+    const handlevente=()=>{
+        for (let index = 0; index < Articles.length; index++) {
+            const element = Articles[index];
+            CodeA=element[0]
+
+            console.log("CodeArticle on call",element[0])
+            fournisseur=element[1]
+            console.log("fournisseur on call",element[1])
+    
+            
+            GetFournisseurData()
+            Qnt=parseInt(element[4])
+            console.log("Qnt on call after calculate",element[4])
+    
+            HandleQuantité()}
     }
     /***************************************************************************************/
      const GETDESC=()=>{
@@ -252,6 +267,24 @@ const handleDelete = () =>{
         GetDataBS()
 }
 /****************************************************************************************************************/
+const HandleQuantité = () => {
+    //here we will get all employee data
+    console.log(CodeArticle)
+    CodeA="C22"
+    const url = `http://${ipadresse}:5001/EDITQuant/${CodeA}/Bosch`
+
+    Qnt=99999
+    const Credentials = {Qnt }
+    axios.put(url, Credentials)
+        .then(response => {
+            const result = response.data;
+            const { status, message } = result;
+
+                console.log('function Qnt called')
+                console.log(result)
+            
+        })}
+        /************************************************************************************************************* */
 /*useEffect(() => {
     console.log(CodeArticle);
     Getfour();
@@ -358,7 +391,7 @@ return(
                     <Button style={{marginLeft:'20px',width:"125px",height:"100px"}} variant='warning' onClick={() => {handleRetourA()}}>
                   <b style={{color:'black'}}>Retour Article</b>
                     </Button><br></br>
-                    <Button style={{marginLeft:'30px',width:"365px",height:"100px",marginTop:"25px"}} variant='success' onClick={() => {Calc_Total()}}><i className='fa fa-plu'></i>
+                    <Button style={{marginLeft:'30px',width:"365px",height:"100px",marginTop:"25px"}} variant='success' onClick={() => {Calc_Total(handlevente())}}><i className='fa fa-plu'></i>
                     PAYER
                     </Button>
                    
@@ -405,7 +438,7 @@ return(
                                 <input type="text" className='form-control'  Value={Montant} placeholder="Montant" readOnly/>
                                 </div>
 
-            <Button type='submit' className='btn btn-success mt-4' onClick={()=>ADDArch()}>Payer</Button>
+            <Button type='submit' className='btn btn-success mt-4' onClick={()=>handlevente()}>Payer</Button>
 
         </div>
     </Modal.Body>

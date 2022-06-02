@@ -3,7 +3,7 @@ import { Button, Modal, ModalTitle } from 'react-bootstrap'
 import axios from 'axios'
 
 export const Employee = () => {
-    var ipadresse="169.254.131.15"
+    var ipadresse="localhost"
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
     const [ViewShow, SetViewShow] = useState(false)
@@ -29,6 +29,7 @@ export const Employee = () => {
     const [password, setpassword] = useState("")
     const [address, setaddress] = useState("")
     const [Role, setRole] = useState("")
+    const [NomUtil, setNomUtil] = useState("")
 
     const [Delete,setDelete] = useState(false)
     //Id for update record and Delete
@@ -50,7 +51,7 @@ export const Employee = () => {
     }
     const handleSubmite = () => {
         const url = `http://${ipadresse}:5001/add_user`
-        const Credentials = { fullName, email, phoneNumber, address ,password,Role}
+        const Credentials = { fullName, email, phoneNumber, address ,NomUtil,password,Role}
         axios.post(url, Credentials)
             .then(response => {
                 const result = response.data;
@@ -110,7 +111,10 @@ export const Employee = () => {
             <hr></hr>
                 <div>
                     <Button variant='dark' style={{marginLeft:"500px",marginTop:"10px"}} onClick={() => { handlePostShow() }}><i className='fa fa-plu'></i>
-                        Add New Employee
+                      <b>  Nouveau </b>
+                    </Button>
+                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <b >Actualiser</b>
                     </Button>
                     <hr></hr>
                 </div>
@@ -120,12 +124,14 @@ export const Employee = () => {
                     <table className='table table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
-                                <th>fullName</th>
+                                <th>Nom et Prénom</th>
+                                <th>Adresse</th>
                                 <th>Email</th>
-                                <th>Number</th>
-                                <th>Address</th>
-                                <th>Password</th>
+                                <th>Numéro téléphone</th>
                                 <th>Role</th>
+                                <th>Nom utilisateur</th>
+                                <th>Mot de Passe</th>
+                                
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -136,10 +142,12 @@ export const Employee = () => {
                                     <td>{item.email}</td>
                                     <td>{item.phoneNumber}</td>
                                     <td>{item.address}</td>
-                                    <td>{item.password}</td>
                                     <td>{item.Role}</td>
+                                    <td>{item.NomUtil}</td>
+                                    <td>{item.password}</td>
+                                    
                                     <td style={{ minWidth: 190 }}>
-                                        <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>|
+                                        
                                         <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>|
                                         <Button size='sm' variant='dark' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>|
                                     </td>
@@ -200,39 +208,44 @@ export const Employee = () => {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Add new Employee</Modal.Title>
+                        <Modal.Title>Nouveau employé</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
                             <div className='form-group'>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" />
+                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Nom et prénom" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" />
+                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Email" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" />
+                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Numéro téléphone" />
                             </div>
                            
                             <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" />
+                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Adresse" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setpassword(e.target.value)} placeholder="Please enter password" />
+                                <input type="text" className='form-control' onChange={(e) => setNomUtil(e.target.value)} placeholder="Nom utilisateur" />
                             </div>
+                            <div className='form-group mt-3'>
+                                <input type="text" className='form-control' onChange={(e) => setpassword(e.target.value)} placeholder="Mot de passe" />
+                            </div>
+
                             <div className='form-group mt-3'>
                             <b> Rôle</b> : <br></br>
-                                <input type="radio" value="Admin"  style={{marginLeft:"150px"}} onChange={(e) => setRole(e.target.value)}/><b>Admin</b> 
-                                <input type="radio" value="Employé"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Employé</b>
+                                <input type="radio" value="Admin"  style={{marginLeft:"80px"}} onChange={(e) => setRole(e.target.value)}/><b>Admin</b> 
+                                <input type="radio" value="Employé"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Agent de comptoire</b>
                                 <input type="radio" value="Cassier"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Cassier</b>
 
                             </div>
                             
-                            <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmite}>Add Employee</Button>
+                            
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostClose}>Close</Button>
+                    <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmite}>Ajouter</Button>
+                        <Button variant='warning' onClick={hanldePostClose}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -245,7 +258,7 @@ export const Employee = () => {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Employee</Modal.Title>
+                        <Modal.Title>Modifier employé</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -266,11 +279,15 @@ export const Employee = () => {
                                 <label>Address</label>
                                 <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
                                 </div>
+                                <div className='form-group mt-3'>
+                                <label>Nom utilisateur</label>
+                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.NomUtil}/>
+                                </div>
                                 <div>
                                 <label>password</label>
                                 <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
                             </div>
-                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Employee</Button>
+                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Modifier</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

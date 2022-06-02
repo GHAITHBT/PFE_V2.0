@@ -13,7 +13,7 @@ export const Chart=()=> {
   const [Data, setData] = useState([]);
   const GetEmployeeData = () => {
     //here we will get all employee data
-    const url = 'http://169.254.131.15:5001/Fournisseur'
+    const url = 'http://localhost:5001/Fournisseur'
     axios.get(url)
     
         .then(response => {
@@ -70,9 +70,7 @@ export const Chart=()=> {
     <div >
       <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Acceuil</p>
             <hr></hr>
-            <Button style={{marginLeft:'400px',width:"100px",}} variant='dark' >
-                    <b >Nouveau</b>
-                    </Button>
+           
                     
                     <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
                     <b >Actualiser</b>

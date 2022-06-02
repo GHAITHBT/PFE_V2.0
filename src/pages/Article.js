@@ -7,7 +7,7 @@ import BarChart from "../components/BarChart";
 import { UserData } from "./Data";
 
 export const Article = () => {
-    var ipadresse="169.254.131.15"
+    var ipadresse="localhost"
     let componentRef = useRef();
     const [Data, setData] = useState([]);
     const [CAR, setCAR] = useState("");
@@ -15,6 +15,8 @@ export const Article = () => {
 
 var idtest=''
 var CodeA=''
+
+var Filter=filter
 var CodeA_Qnt=''
 var Qntt=''
 console.log("codeA now ",CodeA)
@@ -135,7 +137,7 @@ const [fullscreen, setFullscreen] = useState(true);
             GetEmployeeData()
         }
         else{
-    setData(Data.filter(dt=>dt.CodeArticle.includes(`${filter}`)))
+    setData(Data.filter(dt=>dt.CodeArticle.includes(`${Filter}`)))
         console.log("data after filter",Data)
         console.log("filter",filter)
         }
@@ -148,7 +150,7 @@ const [fullscreen, setFullscreen] = useState(true);
             GetEmployeeData()
         }
         else{
-    setData(Data.filter(dt=>dt.Description.includes(`${filter}`)))
+    setData(Data.filter(dt=>dt.Description.includes(`${Filter}`)))
         console.log("data after filter",Data)
         console.log("filter",filter)
         }
@@ -485,8 +487,8 @@ function GetFournisseurDataByRef  ()  {
 
                                     <td style={{ minWidth: 190 }}>
                                        <center>
-                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditFOUR(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>
+                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditFOUR(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                         </center>
                                     </td>
                                     
@@ -988,7 +990,7 @@ function GetFournisseurDataByRef  ()  {
                     
                   
 
-                        <Button variant='secondary' onClick={hanldeListQntFourClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeListQntFourClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
                        
