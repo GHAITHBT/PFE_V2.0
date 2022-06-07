@@ -169,7 +169,8 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                     <td>{item.Etat}</td>
                                     <td style={{ minWidth: 190 }}>
                                         <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>ouvrir</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
                                         
                                     </td>
                                 </tr>
@@ -248,7 +249,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeViewClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -292,7 +293,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldePostClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -334,7 +335,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeEditClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeEditClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -415,7 +416,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                     <Modal.Footer>
                     <Button type='submit' className='btn btn-success mt-4' onClick={COMADD}> Valider</Button>
 
-                        <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Close</Button>
+                        <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
                 </div>

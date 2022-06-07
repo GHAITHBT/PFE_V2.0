@@ -645,11 +645,12 @@ function GetFournisseurDataByRef  ()  {
                                 <input type="text" className='form-control' onChange={(a) => setTéléphone(a.target.value)} placeholder="Téléphone" />
                             </div>
                             
-                            <Button type='submit' className='btn btn-success mt-4' onClick={handleFourn}> Ajouter Fournisseur</Button>
+                            
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostClosefour}>Close</Button>
+                    <Button type='submit' className='btn btn-success mt-4' onClick={handleFourn}> Ajouter</Button>
+                        <Button variant='warning' onClick={hanldePostClosefour}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
                 </div>
@@ -932,9 +933,9 @@ function GetFournisseurDataByRef  ()  {
                                     <td>{item.Adresse}</td>
                                     <td>{item.Téléphone}</td>
                                     <td style={{ minWidth: 190 }}>
-                                        <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='dark' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>|
+                                       
+                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                     </td>
                                 </tr>
                             )}
@@ -944,9 +945,9 @@ function GetFournisseurDataByRef  ()  {
                     </Modal.Body>
                     <Modal.Footer>
                     
-                    <Button type='submit' className='btn btn-success mt-4' onClick={handlePostShowfour}> Ajouter Founisseur</Button>
+                    <Button type='submit' className='btn btn-success mt-4' onClick={handlePostShowfour}> Ajouter</Button>
 
-                        <Button variant='secondary' onClick={hanldeListFourClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeListFourClose}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
                        

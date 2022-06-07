@@ -115,7 +115,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
             })
     }
     
-    const COMADD = () => {
+    const FactADD = () => {
         const url = `http://${ipadress}:5001/Ajout_Facture`
         const Credentials = {NumFact,date,NomCL,Adresse, CDPostVille,Téléphone,email,MontTHT,TotalTVA,RemiseHT,MontTTTC,MontDV,Rest,TotNetHT,Articles}
         axios.post(url, Credentials)
@@ -238,12 +238,10 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                            <Table>
                             <thead>
                             <tr>
-                                <th >code Article</th>
                                 <th >Description</th>
-                                <th >Fournisseur</th>
-                                <th>Prix </th>
+                                <th>Prix unitaire</th>
                                 <th>Quantité </th>
-                                
+                                <th>Total</th>
                             </tr>
                         </thead>
                                 <tbody>
@@ -251,9 +249,8 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                 <tr key={item._id}>
                                     <td>{item[0]}</td>
                                     <td>{item[1]}</td>
-                                    <td>{item[4]}</td>
                                     <td>{item[2]}</td>
-                                    <td>{item[3]}</td>
+                                    <td>{parseFloat(item[1])*parseInt(item[2])}</td>
                                     
                                     
                                     
@@ -446,8 +443,8 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                             {Articles?.map((item) =>
                                 <tr key={item._id}>
                                     <td>{item[0]}</td>
-                                    <td>{item[1]}</td>
                                     <td>{item[2]}</td>
+                                    <td>{item[1]}</td>
                                     <td>{item[3]}</td>
 
                                     
@@ -474,7 +471,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button type='submit' className='btn btn-success mt-4'> Valider</Button>
+                    <Button className='btn btn-success mt-4' onClick={FactADD}> Valider</Button>
 
                         <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Close</Button>
                     </Modal.Footer>

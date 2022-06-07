@@ -4,7 +4,7 @@ import axios from 'axios'
 import { ProductionQuantityLimits } from '@mui/icons-material';
 
 export const BL = () => {
-    var ipadresse="169.254.131.15"
+    var ipadresse="localhost"
 
     var CodeA=''
     var Qnt=0
@@ -237,7 +237,7 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                                 <th>Date de bon de Livraison<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateBl()} placeholder="Filter" /></th>
                                 <th>Date de creation<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterDateCreation()} placeholder="Filter" /></th>
                                 <th>Fournisseur<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterFournisseur()} placeholder="Filter" /></th>
-                                <th>Réference<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterRéference()} placeholder="Filter" /></th>
+                                <th>Réference<br/> <input type="text" className='form-control' onChange={(a) => setFilter(a.target.value)+FilterRéference()} placeholder="Filter" style={{width:"100px"}}/></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -252,7 +252,8 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                                     <td>{item.Réference}</td>
                                     <td style={{ minWidth: 190 }}>
                                         <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>ouvrir</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
                                         
                                     </td>
                                 </tr>
