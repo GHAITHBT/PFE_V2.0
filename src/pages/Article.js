@@ -117,7 +117,7 @@ const [fullscreen, setFullscreen] = useState(true);
         }
     /************************************************************************************************************/
     /************************************************************************************************************/
-    const GetEmployeeData = () => {
+    const GetArticles = () => {
         //here we will get all employee data
         const url = `http://${ipadresse}:5001/Article`
         axios.get(url)
@@ -134,7 +134,7 @@ const [fullscreen, setFullscreen] = useState(true);
     /************************************************************************************************************/
     const FilterByCodeArticle = () => {
         if(filter.length==0){
-            GetEmployeeData()
+            GetArticles()
         }
         else{
     setData(Data.filter(dt=>dt.CodeArticle.includes(`${Filter}`)))
@@ -147,7 +147,7 @@ const [fullscreen, setFullscreen] = useState(true);
     /************************************************************************************************************/
     const FilterByDescription = () => {
         if(filter.length==0){
-            GetEmployeeData()
+            GetArticles()
         }
         else{
     setData(Data.filter(dt=>dt.Description.includes(`${Filter}`)))
@@ -427,7 +427,7 @@ function GetFournisseurDataByRef  ()  {
        
     
     useEffect(() => {
-        GetEmployeeData();
+        GetArticles();
        // GetFournisseurData()
    }, [])
   
@@ -551,7 +551,7 @@ function GetFournisseurDataByRef  ()  {
                     size="lg"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Nouveau Article</Modal.Title>
+                        <Modal.Title>Nouvel Article</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         

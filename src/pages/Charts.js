@@ -11,6 +11,8 @@ import axios from 'axios';
 
 export const Chart=()=> {
   const [Data, setData] = useState([]);
+  const [DataAR, setDataAR] = useState([]);
+
   const GetEmployeeData = () => {
     //here we will get all employee data
     const url = 'http://localhost:5001/Fournisseur'
@@ -25,6 +27,20 @@ export const Chart=()=> {
             console.log(err)
         })
     }
+    const GetArchive = () => {
+      //here we will get all employee data
+      const url = 'http://localhost:5001/Archive'
+      axios.get(url)
+      
+          .then(response => {
+              setDataAR(response.data)
+                  console.log(Data)
+              
+          })
+          .catch(err => {
+              console.log(err)
+          })
+      }
   const [userData, setUserData] = useState({
     labels: Data.map((data) => data.fournisseur),
     datasets: [{
@@ -58,8 +74,26 @@ export const Chart=()=> {
       data: Data.map(o => parseInt(o.Qnt)) // second change
     }]
   };
+  const dataAR = {
+    labels: DataAR.map(o => o.date), // first change
+    datasets: [{
+      label: 'Dinar',
+      fill: false,
+      lineTension: 0.0,
+      backgroundColor:   [
+        "rgba(75,192,192,1)",
+        "#ecf0f1",
+        "#50AF95",
+        "#f3ba2f",
+        "#2a71d0",],
+      borderColor: 'rgb(41, 33, 116,0.5)',
+      pointHitRadius: 20,
+      data: DataAR.map(o => parseInt(o.Montant)) // second change
+    }]
+  };
   useEffect(() => {
     GetEmployeeData();
+    GetArchive()
    // GetFournisseurData()
 }, [])
 
@@ -72,17 +106,22 @@ export const Chart=()=> {
             <hr></hr>
            
                     
-                    <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
+                    <Button style={{marginLeft:'500px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
                     <b >Actualiser</b>
                     </Button>
                     <hr></hr>
       <div style={{ width: 800 }}>
-        <Table style={{marginLeft:"100px"}}>
+        <Table style={{marginLeft:"200px"}}>
           <tr>
+        <td ><BarChart style={{marginLeft:"900px"}} chartData={data} /></td>
+      
+        <td style={{marginLeft:"300px"}}><LineChart chartData={dataAR} /></td>
+        <td style={{marginTop:"300px"}}><PieChart chartData={data} /></td></tr>
+        <tr>
         <td ><BarChart style={{marginLeft:"1000px"}} chartData={data} /></td>
       
-        <td style={{marginLeft:"300px"}}><LineChart chartData={data} /></td>
-        <td style={{marginTop:"300px"}}><PieChart chartData={data} /></td></tr>
+        <td style={{marginLeft:"300px"}}><LineChart chartData={dataAR} /></td>
+        </tr>
         
         </Table>
       </div>

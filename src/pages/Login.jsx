@@ -34,7 +34,7 @@ const handleChange = e => {
 		
 		// setsuccessMessage('Successfully Validated');
 		if(user.email==input.email|| user.password==input.password || user.Role=="Admin"){
-			
+			localStorage.setItem('username',user.fullname)
 		history.push('/App')
 		localStorage.setItem('auth', false)	}
 		else if(user.email==input.email|| user.password==input.password || user.Role=="Employé"){
@@ -44,6 +44,7 @@ const handleChange = e => {
 			console.log(user.Role)
 			history.push('/EMPINTERFACE')
 			localStorage.setItem('auth', false)	
+			localStorage.setItem('username',user.fullname)
 		}
 	  };
 

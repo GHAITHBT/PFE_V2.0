@@ -3,7 +3,7 @@ import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
 
 export const Clients = () => {
-    var ipadresse="169.254.131.15"
+    var ipadresse="localhost"
 
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
@@ -113,9 +113,10 @@ export const Clients = () => {
             <p style={{color:'black',fontSize:"25px",marginLeft:"10px",fontFamily:"Times New Roman",fontWeight:"bold"}}>Liste des clients</p>
             <hr></hr>
                 <div>
-                    <Button variant='dark' style={{marginLeft:'500px',width:"100px",}}onClick={() => { handlePostShow() }}><i className='fa fa-plu'></i>
-                        <b>Nouveau</b>
+                <Button style={{marginLeft:'400px',width:"100px",}} variant='dark' onClick={() => {handlePostShow()}}>
+                    <b >Nouveau</b>
                     </Button>
+                    
                     <Button style={{marginLeft:'200px',width:"100px",}} variant='dark' onClick={() => {window.location.reload()}}>
                     <b >Actualiser</b>
                     </Button>
@@ -127,10 +128,11 @@ export const Clients = () => {
                 <table className='table table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
-                                <th>fullName</th>
+                                <th>Code Client</th>
+                                <th>Nom et Prénom</th>
+                                <th>Numéro téléphone</th>
                                 <th>Email</th>
-                                <th>Number</th>
-                                <th>Address</th>
+                                <th>Addresse</th>
                                 <th>Crédit</th>
                                 <th>Débit</th>
                                 <th>Cheque</th>
@@ -140,9 +142,11 @@ export const Clients = () => {
                         <tbody>
                             {Data.map((item) =>
                                 <tr key={item._id}>
+                                    <td>{item._id}</td>
                                     <td>{item.fullName}</td>
-                                    <td>{item.email}</td>
+                                   
                                     <td>{item.phoneNumber}</td>
+                                    <td>{item.email}</td>
                                     <td>{item.address}</td>
                                     <td>{item.Débit}</td>
                                     <td>{item.Crédit}</td>
@@ -150,9 +154,9 @@ export const Clients = () => {
 
                                     
                                     <td style={{ minWidth: 190 }}>
-                                        <Button size='sm' variant='secondary' onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>|
-                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>|
+                                        
+                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                     </td>
                                 </tr>
                             )}
@@ -215,17 +219,17 @@ export const Clients = () => {
                     <Modal.Body>
                         <div>
                             <div className='form-group'>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" />
+                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Nom et prénom" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" />
+                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Email" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="number" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" />
+                                <input type="number" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Numéro de téléphone" />
                             </div>
                            
                             <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" />
+                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Addresse" />
                             </div>
                             
                         </div>
@@ -233,7 +237,7 @@ export const Clients = () => {
                     <Modal.Footer>
                     <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmite}>Ajouter </Button>
 
-                        <Button variant='warning' onClick={hanldePostClose}style={{marginTop:"25px"}}>Close</Button>
+                        <Button variant='warning' onClick={hanldePostClose}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -275,7 +279,7 @@ export const Clients = () => {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeEditClose}>Close</Button>
+                        <Button variant='secondary' onClick={hanldeEditClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

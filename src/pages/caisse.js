@@ -21,6 +21,8 @@ const [RowData, SetRowData] = useState([])
 const [Delete,setDelete] = useState(false)
 const [val,setVal]=useState()
 const [Data, setData] = useState([]);
+const [DataCL, setDataCL] = useState([]);
+
 const [DataFr, setDataFr] = useState([]);
 const [Remise, setRemise] = useState();
 const [Montant,setMontant]=useState(0)
@@ -44,6 +46,10 @@ const [Prix,setPrix]=useState("")
 const [ViewShow, SetViewShow] = useState(false)
     const handleViewShow = () => { SetViewShow(true) }
     const hanldeViewClose = () => { SetViewShow(false) }
+    const [ViewShowCL, SetViewShowCL] = useState(false)
+    const handleViewShowCL = () => { SetViewShowCL(true) }
+    const hanldeViewCloseCL = () => { SetViewShowCL(false) }
+
     const [ViewARTShow, SetViewARTShow] = useState(false)
     const handleARTViewShow = () => { SetViewARTShow(true) }
     const hanldeViewARTClose = () => { SetViewARTShow(false) }
@@ -79,6 +85,19 @@ const [ViewShow, SetViewShow] = useState(false)
     })
     handleDeleteCaisse()
     }*/
+    const GetClient = () => {
+        //here we will get all employee data
+        const url = `http://${ipadresse}:5001/Clients`
+        axios.get(url)
+            .then(response => {
+                setDataCL(response.data)
+                    console.log(Data)
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
     const GetArticles = () => {
         //here we will get all employee data
         const url = `http://${ipadresse}:5001/Article`
@@ -213,6 +232,7 @@ const GetDataBS = async () => {
     /******************************************************************************************************  */   
     /****************************************************************************************************** */
 const Calc_Total=()=>{
+    Total=0
    for (let index = 0; index < Articles.length; index++) {
     const element = Articles[index];
     Total=Total+parseFloat(element[3])*parseInt(element[4])
@@ -285,12 +305,23 @@ const HandleQuantité = () => {
             
         })}
         /************************************************************************************************************* */
-/*useEffect(() => {
+        function chèque() {
+            var x = document.getElementById("chèque");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+            } else {
+              x.style.display = "none";
+            }
+          }
+
+
+        /*useEffect(() => {
     console.log(CodeArticle);
     Getfour();
   }, [CodeArticle]);*/
   useEffect(() => {
     GetArticles();
+    GetClient()
     setScreenSize("window",window.innerHeight)
 console.log("window",window.innerHeight)
    // GetFournisseurData()
@@ -418,20 +449,32 @@ return(
     <Modal.Body>
         <div>
         <div className='form-group'>
-           <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Code Client" />
+        <table><tr>    <td width={'500px'}>     <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Code Client" /></td> 
+        <Button variant='primary'  onClick={handleViewShowCL}>Liste Client</Button>
+        <td></td>
+        </tr>  </table>
+ 
         </div>
 
             <b>Payment par :</b>        
      <div>
         <input type="radio" value="Espéce" name="gender" style={{marginLeft:"20px"}}/> <b>Espéce </b>
-     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}/> <b>Chèque</b>
+        <input type="radio" value="Débit" name="gender" style={{marginLeft:"20px"}}/> <b>Débit </b>
+
+     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}onChange={chèque}/> <b>Chèque</b>
+     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}/> <b>Crédit</b>
+
 
       </div >
       <br/>
+     
+<div id="chèque" style={{display: 'none' }}>
+  
 
       <b>Numéro Chèque</b>
-      <div className='form-group'>
+      <div className='form-group' >
                                 <input type="text" className='form-control' onChange={(a) => CodeArticle=(a.target.value)} placeholder="Numéro chèque" />
+                                </div>
                                 </div>
         <b>MONTANT</b>
      <div className='form-group'>
@@ -493,6 +536,52 @@ return(
     </Modal.Body>
     <Modal.Footer>
         <Button variant='secondary' onClick={hanldeViewARTClose}>Close</Button>
+    </Modal.Footer>
+     </Modal>
+   </div>        
+   <div className='model-box-view'>
+    <Modal
+    show={ViewShowCL}
+    onHide={hanldeViewCloseCL}
+    backdrop="static"
+    size='lg'
+    keyboard={false}>
+    <Modal.Header closeButton>
+        <Modal.Title>Liste Client</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+                <div className='table-responsive'>
+                    <table className='table table-striped table-hover table-bordered'>
+                        <thead>
+                            <tr>
+                                <th >Code Client</th>
+                                <th >Nom et Prénom</th>
+                                <th>Crédit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {DataCL?.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item._id}</td>
+                                    <td>{item.fullName}</td>
+
+                                    <td>{item.Crédit}</td>
+
+                                   
+
+
+                                   
+                                    
+                                </tr>
+                            )}
+                        </tbody>
+                        
+                    </table>
+                   
+                </div>
+    </Modal.Body>
+    <Modal.Footer>
+        <Button variant='secondary' onClick={hanldeViewCloseCL}>Close</Button>
     </Modal.Footer>
      </Modal>
    </div>        
