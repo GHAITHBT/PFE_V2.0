@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom';
 
 export const CM = () => {
+    let history = useHistory();
+
     var ipadress='localhost'
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
@@ -131,7 +134,9 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
             })
         }
    
-    
+        const print=()=>{
+            history.push("/PrintBC")
+           }
     console.log(ViewShow, RowData)
     useEffect(() => {
         GetEmployeeData();
@@ -170,7 +175,8 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                                     <td style={{ minWidth: 190 }}>
                                         <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>ouvrir</Button>|
                                         <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>|
+                                        <Button size='sm' variant='dark' onClick={()=> {print(	localStorage.setItem('idcom',item._id))}}>Imprimer</Button>
                                         
                                     </td>
                                 </tr>

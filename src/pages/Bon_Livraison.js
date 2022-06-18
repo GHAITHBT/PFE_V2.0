@@ -158,8 +158,35 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
             })
           
     }
-  
-    
+    const handleEdit = () =>{
+        const url = `http://${ipadresse}:5001/EDITBL/${id}`
+        const Credentials = {  NUMBL,DateBL,fournisseur, Réference,Adresse, Téléphone,date }
+        axios.put(url, Credentials)
+            .then(response => {
+                const result = response.data;
+                const { status, message } = result;
+                
+                    window.location.reload()
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const handleDelete = () =>{
+        const url = `http://${ipadresse}:5001/delete_BL/${id}`
+        axios.delete(url)
+            .then(response => {
+                const result = response.data;
+                const { status, message } = result;
+                
+                    window.location.reload()
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     const BLADD = () => {
         const url = `http://${ipadresse}:5001/add_BL`
         const Credentials = { NUMBL,DateBL,fournisseur, Réference,Adresse, Téléphone,Articles,date}
@@ -252,8 +279,8 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                                     <td>{item.Réference}</td>
                                     <td style={{ minWidth: 190 }}>
                                         <Button size='sm' variant='dark' onClick={() => { handleViewShow(SetRowData(item)) }}>ouvrir</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id),setNUMBL(RowData.NUMBL),setDateBL(RowData.DateBL),setfournisseur(RowData.fournisseur),setRéference(RowData.Réference),setAdresse(RowData.Adresse),setTéléphone(RowData.Téléphone))}}>Modifier</Button>|
+                                        <Button size='sm' variant='dark' onClick={() => {handleDeleteShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                         
                                     </td>
                                 </tr>
@@ -337,11 +364,7 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                             )}
                         </tbody>
                         </Table>
-                            {
-                                Delete && (
-                                    <Button type='submit' className='btn btn-danger mt-4' >Delete Employee</Button>
-                                )
-                            }
+                            
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -349,51 +372,90 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                     </Modal.Footer>
                 </Modal>
             </div>
-            {/* Modal for submit data to database */}
             <div className='model-box-view'>
                 <Modal
-                    show={ViewPost}
-                    onHide={hanldePostClose}
+                    show={ViewDelete}
+                    onHide={hanldeDeleteClose}
                     backdrop="static"
                     keyboard={false}
+                    size={"lg"}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Add new Employee</Modal.Title>
+                        <Modal.Title>Supprimer</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
-                            <div className='form-group'>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" />
-                            </div>
-                           
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setpassword(e.target.value)} placeholder="Please enter password" />
-                            </div>
-                            <div className='form-group mt-3'>
-                            <b> Rôle</b> : <br></br>
-                                <input type="radio" value="Admin"  style={{marginLeft:"150px"}} onChange={(e) => setRole(e.target.value)}/><b>Admin</b> 
-                                <input type="radio" value="Admin"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Employé</b>
-
-                            </div>
+                        <Table>
+                       
+                                
+                       <tr>
+                           <td> 
+                              <b> Numéro de bon </b>
+                           <input type="text" className='form-control'  placeholder="N° " value={RowData.NUMBL} readOnly/>
+                       
+                            </td>
+                            <td> 
+                                <b>Date</b>
+                           <input type="text" className='form-control'  placeholder="Date"value={RowData.DateBL}readOnly />
+                       
+                            </td>
+                            </tr>
                             
-                            <Button type='submit' className='btn btn-success mt-4' >Add Employee</Button>
+                            <td colSpan={2}>
+                           <b> Fournisseur</b>
+                            <input type="text" className='form-control' value={RowData.fournisseur}  placeholder="Fournisseur" readOnly />
+                            </td>
+                       <tr>
+                       
+                          
+                            <td colSpan={2}>
+                              <b>  Réference </b>
+                           <input type="email" className='form-control' value={RowData.Réference}  placeholder="Réference" readOnly />
+                           </td>
+                       </tr>
+                       <tr>
+                           
+                           <td colSpan={2}>
+                              <b> Adresse</b>
+                           <input type="email" className='form-control'  value={RowData.Adresse} placeholder="Adresse" readOnly />
+                    </td>
+                   </tr>
+                       <tr>
+                           
+                           <td colSpan={2}> <b>Numéro Téléphone</b>
+                           <input type="text" className='form-control'  value={RowData.Téléphone} placeholder="Téléphone"readOnly /></td>
+                           </tr>
+                           </Table>
+                           <Table>
+                            <thead>
+                            <tr>
+                                <th >code Article</th>
+                                <th >Description</th>
+                                <th>Prix Achat</th>
+                                <th>Quantité </th>
+                            </tr>
+                        </thead>
+                                <tbody>
+                            {RowData.Articles?.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item[0]}</td>
+                                    <td>{item[1]}</td>
+                                    <td>{item[2]}</td>
+                                    <td>{item[3]}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                        </Table>
+                        <Button  className='btn btn-warning mt-4'onClick={handleDelete}>Valider</Button>
+
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostClose}>Close</Button>
+                        <Button variant='secondary' onClick={hanldeDeleteClose}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
-            {/* Modal for Edit employee record */}
+            
             <div className='model-box-view'>
                 <Modal
                     show={ViewEdit}
@@ -402,32 +464,73 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Employee</Modal.Title>
+                        <Modal.Title>Modifier</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
-                            <div className='form-group'>
-                                <label>Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Email</label>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Number</label>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
-                            </div>
+                    <div>
+                        <Table>
+                       {}
+                                
+                       <tr>
+                           <td> 
+                              <b> Numéro de bon </b>
+                           <input type="text" className='form-control'  placeholder="N° " defaultValue={RowData.NUMBL} setNUMBL  onChange={(e) => setNUMBL(e.target.value)} />
+                       
+                            </td>
+                            <td> 
+                                <b>Date</b>
+                           <input type="text" className='form-control'  placeholder="Date" defaultvalue={RowData.DateBL}   />
+                       
+                            </td>
+                            </tr>
+                            
+                            <td colSpan={2}>
+                           <b> Fournisseur</b>
+                            <input type="text" className='form-control' defaultvalue={RowData.fournisseur}  placeholder="Fournisseur"   onChange={(e) => setfournisseur(e.target.value)} />
+                            </td>
+                       <tr>
+                       
+                          
+                            <td colSpan={2}>
+                              <b>  Réference </b>
+                           <input type="email" className='form-control' defaultvalue={RowData.Réference}  placeholder="Réference"  onChange={(e) => setRéference(e.target.value)}  />
+                           </td>
+                       </tr>
+                       <tr>
                            
-                            <div className='form-group mt-3'>
-                                <label>Address</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
-                                </div>
-                                <div>
-                                <label>password</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
-                            </div>
-                            <Button type='submit' className='btn btn-warning mt-4'>Edit Employee</Button>
+                           <td colSpan={2}>
+                              <b> Adresse</b>
+                           <input type="email" className='form-control'  defaultvalue={RowData.Adresse} placeholder="Adresse"  onChange={(e) => setAdresse(e.target.value)}  />
+                    </td>
+                   </tr>
+                       <tr>
+                           
+                           <td colSpan={2}> <b>Numéro Téléphone</b>
+                           <input type="text" className='form-control'  defaultvalue={RowData.Téléphone} placeholder="Téléphone"  onChange={(e) => setTéléphone(e.target.value)}  /></td>
+                           </tr>
+                           </Table>
+                           <Table>
+                            <thead>
+                            <tr>
+                                <th >code Article</th>
+                                <th >Description</th>
+                                <th>Prix Achat</th>
+                                <th>Quantité </th>
+                            </tr>
+                        </thead>
+                                <tbody>
+                            {RowData.Articles?.map((item) =>
+                                <tr key={item._id}>
+                                    <td>{item[0]}</td>
+                                    <td>{item[1]}</td>
+                                    <td>{item[2]}</td>
+                                    <td>{item[3]}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                        </Table>
+                           
+                              <Button type='submit' className='btn btn-warning mt-4'onClick={handleEdit}>Valider</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

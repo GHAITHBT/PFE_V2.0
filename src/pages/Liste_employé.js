@@ -66,7 +66,7 @@ export const Employee = () => {
     }
     
     const handleEdit = () =>{
-        const url = `http://${ipadresse}:5001/modify_contact/${id}`
+        const url = `http://${ipadresse}:5001/EDIT_USER/${id}`
         const Credentials = { fullName, email, phoneNumber, address }
         axios.put(url, Credentials)
             .then(response => {
@@ -125,9 +125,11 @@ export const Employee = () => {
                         <thead>
                             <tr>
                                 <th>Nom et Prénom</th>
-                                <th>Adresse</th>
                                 <th>Email</th>
                                 <th>Numéro téléphone</th>
+                                <th>Adresse</th>
+                               
+                                
                                 <th>Role</th>
                                 <th>Nom utilisateur</th>
                                 <th>Mot de Passe</th>
@@ -148,8 +150,8 @@ export const Employee = () => {
                                     
                                     <td style={{ minWidth: 190 }}>
                                         
-                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='dark' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>|
+                                        <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id),setfullName(RowData.fullName),setemail(RowData.Email),setaddress(RowData.address),setphoneNumber(RowData.phoneNumber),setNomUtil(RowData.NomUtil),setpassword(RowData.password))}}>Modifier</Button>|
+                                        <Button size='sm' variant='dark' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>|
                                     </td>
                                 </tr>
                             )}
@@ -157,49 +159,6 @@ export const Employee = () => {
                     </table>
                 </div>
             </div>
-            {/* View Modal */}
-            <div className='model-box-view'>
-                <Modal
-                    show={ViewShow}
-                    onHide={hanldeViewClose}
-                    backdrop="static"
-                    keyboard={false}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>View Employee Data</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div>
-                            <div className='form-group'>
-                                <input type="text" className='form-control' value={RowData.fullName} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="email" className='form-control' value={RowData.email} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.phoneNumber} readOnly />
-                            </div>
-                            
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.address} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.password} readOnly />
-                            </div>
-                            
-                            {
-                                Delete && (
-                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Delete Employee</Button>
-                                )
-                            }
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-            {/* Modal for submit data to database */}
             <div className='model-box-view'>
                 <Modal
                     show={ViewPost}
@@ -263,7 +222,7 @@ export const Employee = () => {
                     <Modal.Body>
                         <div>
                             <div className='form-group'>
-                                <label>Name</label>
+                                <label>Nom et Prénom</label>
                                 <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
                             </div>
                             <div className='form-group mt-3'>
@@ -271,21 +230,21 @@ export const Employee = () => {
                                 <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Number</label>
+                                <label>Numéro de téléphone</label>
                                 <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
                             </div>
                            
                             <div className='form-group mt-3'>
-                                <label>Address</label>
+                                <label>Addresse</label>
                                 <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
                                 </div>
                                 <div className='form-group mt-3'>
                                 <label>Nom utilisateur</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.NomUtil}/>
+                                <input type="text" className='form-control' onChange={(e) => setNomUtil(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.NomUtil}/>
                                 </div>
                                 <div>
-                                <label>password</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
+                                <label>Mot de passe</label>
+                                <input type="text" className='form-control' onChange={(e) => setpassword(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
                             </div>
                             <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Modifier</Button>
                         </div>

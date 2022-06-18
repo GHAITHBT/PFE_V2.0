@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Button } from "react-bootstrap";
 import ReactToPrint from "react-to-print";
 import Article from './Article'
-import PrintBS from "./PRINTBS";
+import PrintBS from "./PRINTFACT";
 export default function PrintComponent() {
   let componentRef = React.createRef()
 

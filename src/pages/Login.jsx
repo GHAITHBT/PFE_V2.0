@@ -5,13 +5,13 @@ import axios from 'axios'
 const Login = () => {
 	const history = useHistory()
 
-	const [input, setInput] = React.useState({ email: '', password: '' });
+	const [input, setInput] = React.useState({ username: '', password: '' });
 	const [user, setuser] =useState([])
 	const [errorMessage, seterrorMessage] = React.useState('');
 	const [successMessage, setsuccessMessage] = React.useState('');
 
 const getUser=()=>{
-	const url=`http://localhost:5001/User/${input.email}`
+	const url=`http://localhost:5001/User/${input.username}`
 		console.log(input.email)
 		axios.get(url).then(res => {
 		  setuser(res.data);
@@ -33,18 +33,13 @@ const handleChange = e => {
 		localStorage.setItem('username',user.fullname)
 		
 		// setsuccessMessage('Successfully Validated');
-		if(user.email==input.email|| user.password==input.password || user.Role=="Admin"){
-			localStorage.setItem('username',user.fullname)
-		history.push('/App')
-		localStorage.setItem('auth', false)	}
-		else if(user.email==input.email|| user.password==input.password || user.Role=="Employé"){
-			console.log(input.email)
-			console.log(user.email)
-			console.log(user.password)
-			console.log(user.Role)
-			history.push('/EMPINTERFACE')
+		
+	 if(user.NomUtil==input.username|| user.password==input.password){
+			
+			history.push('/'+user.Role)
 			localStorage.setItem('auth', false)	
-			localStorage.setItem('username',user.fullname)
+			localStorage.setItem('username',user.fullName)
+			console.log(user.fullName)
 		}
 	  };
 
@@ -64,7 +59,7 @@ const handleChange = e => {
 								<input
 									className="input100"
 									type="text"
-									name="email"
+									name="username"
 									placeholder="tapez votre nom d'utilisateur"
 									onChange={handleChange}
 								/>

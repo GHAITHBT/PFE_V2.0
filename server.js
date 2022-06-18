@@ -80,6 +80,16 @@ app.get('/users',(req,res)=>{
        res.send(data)
       })
       })
+      
+      app.get('/Articlebydate',(req,res)=>{
+        db.collection("Archive").find({date: {$gte:"2022/5/27",$lte:"2022/6/18"}}).toArray((err,data)=>{
+          if(err) 
+           res.send('Cannot fetch contacts')
+          else
+          
+           res.send(data)
+          })
+        })
       app.get('/Fournisseur/:ca',(req,res)=>{
         db.collection('Fournisseur').find({CodeArticle:req.params.ca}).toArray((err,data)=>{
         if(err) 
@@ -89,9 +99,10 @@ app.get('/users',(req,res)=>{
          res.send(data)
         })
         })
+        
         app.get('/User/:login', (req, res) => {
           db.collection('user').findOne(
-            { email:req.params.login },
+            { NomUtil:req.params.login },
             (err, data) => {
               if (err) res.send('cannot fetch contact')
               else res.send(data)
@@ -125,6 +136,15 @@ app.get('/users',(req,res)=>{
              res.send(data)
             })
             })
+            app.get('/Clientbyname/:FN',(req,res)=>{
+              db.collection('Client').findOne({fullName:req.params.FN}).then((data)=>{
+              if(err) 
+               res.send('Cannot fetch contacts')
+              else
+              
+               res.send(data)
+              })
+              })
         app.get('/BS',(req,res)=>{
           db.collection('Bon Sortie').find().toArray((err,data)=>{
           if(err) 
@@ -143,6 +163,15 @@ app.get('/users',(req,res)=>{
              res.send(data)
             })
             })
+            app.get('/FRDIS',(req,res)=>{
+              db.collection("Fournisseur").distinct("fournisseur").then((data)=>{
+              if(err) 
+               res.send('Cannot fetch contacts')
+              else
+              
+               res.send(data)
+              })
+              })
             app.get('/Clients',(req,res)=>{
               db.collection('Client').find().toArray((err,data)=>{
               if(err) 
@@ -187,6 +216,14 @@ app.get('/users',(req,res)=>{
             res.send(data)
           });
       });
+      app.get("/QNTSTOCK/:CA/:Four", (req, res) => {
+        db.collection("Fournisseur").findOne({CodeArticle:req.params.CA,fournisseur:req.params.Four}).then((data) => {
+            if(err) 
+                console.send('Cannot fetch contacts')
+           else
+                res.send(data)
+          });
+          });
       app.get("/Articlebyid/:id", (req, res) => {
         db.collection("Article").findOne({_id:ObjectID(req.params.id)}).then((data) => {
            if(err) 
@@ -195,6 +232,22 @@ app.get('/users',(req,res)=>{
            res.send(data)
          });
      });
+     app.get("/Facture/:id", (req, res) => {
+      db.collection("Facture").findOne({_id:ObjectID(req.params.id)}).then((data) => {
+         if(err) 
+         console.send('Cannot fetch contacts')
+        else
+         res.send(data)
+       });
+   });
+   app.get("/Commande/:id", (req, res) => {
+    db.collection("Commande").findOne({_id:ObjectID(req.params.id)}).then((data) => {
+       if(err) 
+       console.send('Cannot fetch contacts')
+      else
+       res.send(data)
+     });
+ });
       app.get("/rowFR/:CA", (req, res) => {
         db.collection("Fournisseur").findOne({CodeArticle: req.params.CA}).then((data) => {
            if(err) 
@@ -316,6 +369,39 @@ app.post('/add_CAISSE',(req,res)=>{
  }
  )
  })
+ app.put('/EDITFOURBYCA/:CA',(req,res)=>{
+  db.collection('Fournisseur').updateMany({CodeArticle:req.params.CA},
+  {$set:{...req.body}},(err,data)=>{
+     if(err)
+     {res.send('Cannot update contact')
+     console.log(err)}
+     else
+     res.send('Contact updated')
+  }
+  )
+  })
+ app.put('/EDITART/:id',(req,res)=>{
+  db.collection('Article').updateMany({_id:ObjectID(req.params.id)},
+  {$set:{...req.body}},(err,data)=>{
+     if(err)
+     {res.send('Cannot update contact')
+     console.log(err)}
+     else
+     res.send('Contact updated')
+  }
+  )
+  })
+ app.put('/EDITBL/:id',(req,res)=>{
+  db.collection('Bon de Livraison').updateMany({_id:ObjectID(req.params.id)},
+  {$set:{...req.body}},(err,data)=>{
+     if(err)
+     {res.send('Cannot update contact')
+     console.log(err)}
+     else
+     res.send('Contact updated')
+  }
+  )
+  })
  app.put('/EDITQuant/:CD/:FR',(req,res)=>{
   db.collection('Fournisseur').updateOne({CodeArticle:req.params.CD,fournisseur:req.params.FR},
   {$set:{...req.body}},(err,data)=>{
@@ -338,6 +424,28 @@ app.post('/add_CAISSE',(req,res)=>{
   }
   )
   })
+  app.put('/EDIT_USER/:id',(req,res)=>{
+    db.collection('user').updateMany({_id:ObjectID(req.params.id)},
+    {$set:{...req.body}},(err,data)=>{
+       if(err)
+       {res.send('Cannot update contact')
+       console.log(err)}
+       else
+       res.send('Contact updated')
+    }
+    )
+    })
+    app.put('/EDIT_FACT/:id',(req,res)=>{
+      db.collection('Facture').updateMany({_id:ObjectID(req.params.id)},
+      {$set:{...req.body}},(err,data)=>{
+         if(err)
+         {res.send('Cannot update contact')
+         console.log(err)}
+         else
+         res.send('Contact updated')
+      }
+      )
+      })
   app.put('/QNT/:CA/:FR',(req,res)=>{
     db.collection('Fournisseur').updateOne({CodeArticle:req.params.CA,fournisseur:req.params.FR},
     {$set:{...req.body}},(err,data)=>{
@@ -360,8 +468,28 @@ app.post('/add_CAISSE',(req,res)=>{
         
     })
  })
+ app.delete('/delete_Facture/:id',(req,res)=>{
+  db.collection('Facture').remove({_id:ObjectID(req.params.id)},(err,data)=>{
+      if(err)
+  {res.send('Cannot delete contact')
+  console.log(err)}
+  else
+  res.send('Contact deleted')
+      
+  })
+})
  app.delete('/delete_Article/:id',(req,res)=>{
   db.collection('Article').remove({_id:ObjectID(req.params.id)},(err,data)=>{
+      if(err)
+  {res.send('Cannot delete contact')
+  console.log(err)}
+  else
+  res.send('Contact deleted')
+      
+  })
+})
+app.delete('/delete_BL/:id',(req,res)=>{
+  db.collection('Bon de Livraison').remove({_id:ObjectID(req.params.id)},(err,data)=>{
       if(err)
   {res.send('Cannot delete contact')
   console.log(err)}

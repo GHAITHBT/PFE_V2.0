@@ -25,7 +25,7 @@ const [fullscreen, setFullscreen] = useState(true);
     const [DataFour, setDataFour] = useState([]);
     const [Four, setFour] = useState([]);
     const [Matricule, setMatricule] = useState("");
-    const [TypeRecherche, setTypeRecherche] = useState("");
+    const [Marge, setMarge] = useState("");
 
 
     const [Adresse, setAdresse] = useState("");
@@ -157,28 +157,7 @@ const [fullscreen, setFullscreen] = useState(true);
         
     }
 /************************************************************************************************************/
-/********************************************************************************************************/        
-        function GetFournisseurData  ()  {
-            //here we will get all employee data
-            const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
-            axios.get(url)
-                .then(response => {
-                    const result = response.data;
-                    setFour(result)
-                        console.log('url is ',url)
-                        console.log('car in req',CAR)
-                    console.log('Fournisseur called')
-                    setCodeArticle(result.CodeArticle)
-                   
-                        
-                    
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-                
-        }
- /************************************************************************************************************/ 
+ 
    /************************************************************************************************************/
    /********************************************************************************************************/        
    function GetQnt  ()  {
@@ -289,6 +268,30 @@ function GetFournisseurDataByRef  ()  {
                 }
 /************************************************************************************************************/
  /************************************************************************************************************/
+ /********************************************************************************************************/        
+ function GetFournisseurData  ()  {
+    //here we will get all employee data
+    const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
+    axios.get(url)
+        .then(response => {
+            const result = response.data;
+            setFour(result)
+                console.log('url is ',url)
+                console.log('car in req',CAR)
+            console.log('Fournisseur called andworking')
+            setCodeArticle(CodeA)
+            setCodeArticle(CodeA)
+            console.log("Codearticel when fr clled now",CodeArticle)
+           
+                
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+}
+/************************************************************************************************************/
     const handleSubmite = () => {
         const url = `http://${ipadresse}:5001/add_Article`
         const Credentials = { CodeArticle, Description}
@@ -309,7 +312,7 @@ function GetFournisseurDataByRef  ()  {
     /************************************************************************************************************/
     const handleFourn = () => {
         const url = `http://${ipadresse}:5001/add_Fournisseur`
-        const Credentials = { fournisseur,Matricule, Réference,Adresse, Téléphone,CodeArticle,Quantité}
+        const Credentials = { fournisseur,Matricule, Réference,Adresse, Téléphone,CodeArticle,Quantité,PrixAchat,PrixVente}
         axios.post(url, Credentials)
             .then(response => {
                 const result = response.data;
@@ -359,9 +362,9 @@ function GetFournisseurDataByRef  ()  {
     
 /************************************************************************************************************/
 /****************************************************************************************************/            
-    const handleEdit = () =>{
-        const url = `http://${ipadresse}:5001/modify_contact/${id}`
-        const Credentials = { fullName, email, phoneNumber, address }
+    const handleEditArticle = () =>{
+        const url = `http://${ipadresse}:5001/EDITART/${id}`
+        const Credentials = { CodeArticle,Description }
         axios.put(url, Credentials)
             .then(response => {
                 const result = response.data;
@@ -370,9 +373,16 @@ function GetFournisseurDataByRef  ()  {
                     window.location.reload()
                 
             })
+            
             .catch(err => {
                 console.log(err)
             })
+            const url1 = `http://${ipadresse}:5001/EDITFOURBYCA/${CodeA}`
+            const Credentials1 = { CodeArticle }
+            axios.put(url1, Credentials1)
+                .then(response => {
+                    const result = response.data;
+                    const { status, message } = result;})
     }
     /************************************************************************************************************/
     /************************************************************************************************************/
@@ -487,7 +497,7 @@ function GetFournisseurDataByRef  ()  {
 
                                     <td style={{ minWidth: 190 }}>
                                        <center>
-                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditFOUR(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id),setCodeArticle(RowData.CodeArticle),setDescription(RowData.Description),CodeA=RowData.CodeArticle)}}>Modifier</Button>|
                                         <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                         </center>
                                     </td>
@@ -596,11 +606,12 @@ function GetFournisseurDataByRef  ()  {
                                 </td>
                                 
                             </tr>
-                            
+                            <tr>
+                            <td> <input type="text" className='form-control' onChange={(a) => setPrixVente(a.target.value)} placeholder="PrixVente" value={PrixVente}/></td>
+                                <td> <input type="text" className='form-control' onChange={(a) => setTéléphone(a.target.value)} placeholder="Téléphone" /></td></tr>
                             
                                 <tr>
-                                    <td></td>
-                                <td> <input type="text" className='form-control' onChange={(a) => setTéléphone(a.target.value)} placeholder="Téléphone" /></td>
+                               
                                 </tr>
                             
                            
@@ -816,32 +827,19 @@ function GetFournisseurDataByRef  ()  {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Employee</Modal.Title>
+                        <Modal.Title>Modifier ART</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
                             <div className='form-group'>
                                 <label>Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
+                                <input type="text" className='form-control' onChange={(e) => setCodeArticle(e.target.value)}  defaultValue={RowData.CodeArticle}/>
                             </div>
                             <div className='form-group mt-3'>
                                 <label>Email</label>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Number</label>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
-                            </div>
-                           
-                            <div className='form-group mt-3'>
-                                <label>Address</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
-                                </div>
-                                <div>
-                                <label>password</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
-                            </div>
-                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Employee</Button>
+                                <input type="email" className='form-control' onChange={(e) => setDescription(e.target.value)}  defaultValue={RowData.Description} />
+                           </div>
+                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEditArticle}>Valider</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -913,11 +911,13 @@ function GetFournisseurDataByRef  ()  {
                     </Modal.Header>
                     <Modal.Body>
                         <div>
-                        <table className='table table-striped table-hover table-bordered'>
+                        <table className=' responsivetable table-striped table-hover table-bordered'>
                         <thead>
                             <tr>
                                 <th>Fournisseur</th>
                                 <th>Matricule fiscale</th>
+                                <th>Prix achat</th>
+                                <th>Prix Vente</th>
                                 <th>Réference</th>
                                 <th>Adresse</th>
                                 <th>Téléphone</th>
@@ -929,11 +929,12 @@ function GetFournisseurDataByRef  ()  {
                                 <tr key={item._id}>
                                     <td>{item.fournisseur}</td>
                                     <td>{item.Matricule}</td>
+                                    <td>{item.PrixAchat}</td>
+                                    <td>{item.PrixVente}</td>
                                     <td>{item.Réference}</td>
                                     <td>{item.Adresse}</td>
                                     <td>{item.Téléphone}</td>
-                                    <td style={{ minWidth: 190 }}>
-                                       
+                                    <td>
                                         <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
                                         <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                     </td>

@@ -25,10 +25,10 @@ function Navbar() {
           <ul>
           <Link to='/Acceuil' className='menu-bars'>
 
-            <span style={{color:'white',fontSize:"38px",marginLeft:"60vh",fontFamily:"Brush Script MT",fontWeight:"bold"}}>T.E.A</span>
-            <span style={{color:'white',fontSize:"20px",marginLeft:"8px",fontFamily:"Brush Script MT",fontWeight:"bold"}}>{localStorage.username}</span>
+            <span style={{color:'white',fontSize:"38px",fontFamily:"Brush Script MT",fontWeight:"bold"}}>T.E.A</span>
+            <span style={{color:'white',fontSize:"20px",marginLeft:"300px"}}>{localStorage.getItem("username")}</span>
            </Link> 
-          <AiIcons.AiOutlineLogout style={{marginLeft: '75vh',color:"white"}}onClick={()=>history.push('/')}/>
+          <AiIcons.AiOutlineLogout style={{marginLeft: '7vh',color:"white"}}onClick={()=>history.push('/')}/>
           <span style={{color:'White'}} onClick={()=>history.push('/')}>Log Out</span> </ul>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>

@@ -11,7 +11,9 @@ export const Caisse =()=>{
     var ipadresse="localhost"
     var CodeA=""
     var Qnt=0
+    var QNTAPVE=0
     var fournisseur=""
+    var QntStock=0
 const caisse=[String]
 var Total=50
 const [Articles, setArticles] = useState([]);
@@ -27,6 +29,10 @@ const [DataFr, setDataFr] = useState([]);
 const [Remise, setRemise] = useState();
 const [Montant,setMontant]=useState(0)
 const [CAR, setCAR] = useState("");
+const [TypePayment, setTypePayement] = useState("");
+const [NumCheq, setNumCheq] = useState("");
+
+
 
 var Montantblabla;
 //const Date =`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
@@ -151,21 +157,37 @@ const [ViewShow, SetViewShow] = useState(false)
     const { status, message, data } = result;
     })
     }
-    const handlevente=()=>{
-        for (let index = 0; index < Articles.length; index++) {
-            const element = Articles[index];
-            CodeA=element[0]
+    function GetQNTSTOCK  ()  {
+        QntStock=0
+        const url = `http://${ipadresse}:5001/QNTSTOCK/`+CodeA+'/'+fournisseur
+        axios.get(url)
+            .then(response => {
+                const result = response.data;
+               QntStock=result.Qnt
+               console.log('Qnt in fr',QntStock)
 
-            console.log("CodeArticle on call",element[0])
-            fournisseur=element[1]
-            console.log("fournisseur on call",element[1])
-    
+                    
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
             
-            GetFournisseurData()
-            Qnt=parseInt(element[4])
-            console.log("Qnt on call after calculate",element[4])
-    
-            HandleQuantité()}
+    }
+    const handlevente=()=>{
+        Articles.forEach(element => {
+            Qnt=0
+            CodeA=element[0]
+            fournisseur=element[1]
+            
+            GetQNTSTOCK()
+            QNTAPVE=parseInt(QntStock)-parseInt(element[4])
+            console.log("qntcalculenow",parseInt(QntStock)-parseInt(element[4]))
+            Qnt=QNTAPVE
+            HandleQuantité()
+ADDArch()
+        });
+        
     }
     /***************************************************************************************/
      const GETDESC=()=>{
@@ -200,6 +222,7 @@ const GetPrix = () => {
             console.log("DATA Fournisseur",response.data)
             setPrix(response.data.PrixVente)
                 console.log("prix",Prix)  
+            QntStock=response.data.Qnt
         })    
 }
 /****************************************************************************************************/
@@ -288,12 +311,9 @@ const handleDelete = () =>{
 }
 /****************************************************************************************************************/
 const HandleQuantité = () => {
-    //here we will get all employee data
     console.log(CodeArticle)
-    CodeA="C22"
-    const url = `http://${ipadresse}:5001/EDITQuant/${CodeA}/Bosch`
+    const url = `http://${ipadresse}:5001/EDITQuant/${CodeA}/${fournisseur}`
 
-    Qnt=99999
     const Credentials = {Qnt }
     axios.put(url, Credentials)
         .then(response => {
@@ -328,8 +348,10 @@ console.log("window",window.innerHeight)
 }, [])
 
 return(
+    
+
     <div className='table-responsive' >
-         
+
          <table className='table table-striped table-hover table-bordered' style={{marginLeft:"auto",marginRight:"auto"}}>
     <tr >
         <td>
@@ -458,11 +480,11 @@ return(
 
             <b>Payment par :</b>        
      <div>
-        <input type="radio" value="Espéce" name="gender" style={{marginLeft:"20px"}}/> <b>Espéce </b>
-        <input type="radio" value="Débit" name="gender" style={{marginLeft:"20px"}}/> <b>Débit </b>
+        <input type="radio" value="Espéce"  style={{marginLeft:"20px"}}  onChange={(a) => setTypePayement(a.target.value)}/> <b>Espéce </b>
+        <input type="radio" value="Débit"  style={{marginLeft:"20px"}}/>  onChange={(a) => setTypePayement(a.target.value)}<b>Débit </b>
 
-     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}onChange={chèque}/> <b>Chèque</b>
-     <input type="radio" value="cheque" name="gender" style={{marginLeft:"20px"}}/> <b>Crédit</b>
+     <input type="radio" value="chèque"  style={{marginLeft:"20px"}}onChange={(a)=>chèque(setTypePayement(a.target.value))}/> <b>Chèque</b>
+     <input type="radio" value="crédit" style={{marginLeft:"20px"}} onChange={(a) => setTypePayement(a.target.value)}/> <b>Crédit</b>
 
 
       </div >
