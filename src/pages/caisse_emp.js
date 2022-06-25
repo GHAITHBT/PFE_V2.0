@@ -1,20 +1,23 @@
 import { Code, Timer10 } from '@material-ui/icons';
 import { Color } from 'ag-grid-community';
 import axios from 'axios';
-import React, {  useState,useEffect } from 'react';
+import React, {  useState,useEffect,useHis } from 'react';
 import Select  from 'react-select';
 import { Table,Button,Modal,Dropdown } from 'react-bootstrap';
 import DeleteIcon from '@mui/icons-material/Send';
 import ImageButton from'react-image-button'
 import logo from './logo.png'
-export const Caisse =()=>{
+import {useHistory} from "react-router-dom"
+
+export const Caisse_emp =()=>{
+    const history = useHistory()
+
     var ipadresse="localhost"
     var CodeA=""
     var Qnt=0
     var QNTAPVE=0
     var fournisseur=""
     var QntStock=0
-const caisse=[String]
 var Total=50
 const [Articles, setArticles] = useState([]);
 const [ID,setId]=useState()
@@ -34,8 +37,7 @@ const [NumCheq, setNumCheq] = useState("");
 
 
 
-var Montantblabla;
-//const Date =`${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
+
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
 
@@ -68,31 +70,10 @@ const [ViewShow, SetViewShow] = useState(false)
     const [ViewRetourA, SetRetourA] = useState(false)
     const handleRetourA = () => { SetRetourA(true) }
     const hanldeRetourAClose = () => { SetRetourA(false) }
-
-/***************************************************************************************/
-    /* const EditQuantité = async()=>{
-        const Total= async()=>{
-            /* for (let i = 0; i < Data.length-1; i++) {
-                 // setTotalM(parseFloat(Data[i].Prix)+parseFloat(Data[i].Prix))  
-                 setMontant(parseFloat(Montant)+parseFloat(Data[i].Prix))
-                  console.log("TOTAL",Data[i].QuantitéVN)}
-              await   Data.forEach(element => {
-                     Montantblabla = (parseFloat(parseFloat(Montantblabla)+parseFloat(element.Prix)))
-                     console.log("TOTAL foreach",Montantblabla)})
-         
-         }
-        const url2 = 'http://169.254.131.15:5001/Edit'
-        const Credentials = {QuantitéVN}
-       await axios.put(url2, Credentials)
-.then(response => {
-    const result = response.data;
-    const { status, message, data } = result;
-    
-    })
-    handleDeleteCaisse()
-    }*/
+const handleLogout=()=>{
+    history.push('/')
+}
     const GetClient = () => {
-        //here we will get all employee data
         const url = `http://${ipadresse}:5001/Clients`
         axios.get(url)
             .then(response => {
@@ -105,7 +86,6 @@ const [ViewShow, SetViewShow] = useState(false)
             })
         }
     const GetArticles = () => {
-        //here we will get all employee data
         const url = `http://${ipadresse}:5001/Article`
         axios.get(url)
             .then(response => {
@@ -118,7 +98,6 @@ const [ViewShow, SetViewShow] = useState(false)
             })
         }
     function GetArticlebyid ()  {
-        //here we will get all employee data
         const url = `http://${ipadresse}:5001/Articlebyid/${idtest}`
         axios.get(url)
             .then(response => {
@@ -128,7 +107,6 @@ const [ViewShow, SetViewShow] = useState(false)
            
         }
         function GetFournisseurData  ()  {
-            //here we will get all employee data
             const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
             axios.get(url)
                 .then(response => {
@@ -271,25 +249,9 @@ const Calc_Total=()=>{
 const Click = async()=>{
     console.log(CodeArticle)
     console.log(Fournisseur)
-    //GetFRData()
-    //GETDESC()
-    //Articles.push([CodeArticle,Fournisseur,Description,Prix,QuantitéVN])
-        
-    //ADD(GetDataBS())
-    //GetDataBS()
-   // Total()
-   //setVal()
+  
 }
-/*useEffect(() => {
-    GetFRData()
-    GETDESC()
-    GetDataBS()
-    GetDataBS()
-    GetDataBS()
-    GetDataBS()
-    GetDataBS()
-    Total()
-}, [])*/
+
 const handleDeleteCaisse = () =>{
     const url = `http://${ipadresse}:5001/CAISSEDELETE`
     axios.delete(url)
@@ -335,12 +297,6 @@ const HandleQuantité = () => {
               x.style.display = "none";
             }
           }
-
-
-        /*useEffect(() => {
-    console.log(CodeArticle);
-    Getfour();
-  }, [CodeArticle]);*/
   useEffect(() => {
     GetArticles();
     GetClient()
@@ -453,7 +409,9 @@ return(
                     
                     <br/>
                    
-                    
+                    <Button style={{marginLeft:'520px',width:"100px",height:"40px",marginTop:"85px"}} variant='dark' onClick={() => handleLogout()}>
+                    <b style={{color:'white'}}>Log Out</b>
+                    </Button>
                     </td>
 
     </tr>

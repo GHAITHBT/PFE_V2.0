@@ -4,6 +4,10 @@ import axios from 'axios'
 
 export const Employee = () => {
     var ipadresse="localhost"
+    const [errorMessage, seterrorMessage] = React.useState('');
+    const [ViewDelete, SetDeleteShow] = useState(false)
+    const handleDeleteShow = () => { SetDeleteShow(true) }
+    const hanldeDeleteClose = () => { SetDeleteShow(false) }
     const [Data, setData] = useState([]);
     const [RowData, SetRowData] = useState([])
     const [ViewShow, SetViewShow] = useState(false)
@@ -13,10 +17,8 @@ export const Employee = () => {
     const [ViewEdit, SetEditShow] = useState(false)
     const handleEditShow = () => { SetEditShow(true) }
     const hanldeEditClose = () => { SetEditShow(false) }
-    //FOr Delete Model
-    const [ViewDelete, SetDeleteShow] = useState(false)
-    const handleDeleteShow = () => { SetDeleteShow(true) }
-    const hanldeDeleteClose = () => { SetDeleteShow(false) }
+
+   
     //FOr Add New Data Model
     const [ViewPost, SetPostShow] = useState(false)
     const handlePostShow = () => { SetPostShow(true) }
@@ -50,21 +52,31 @@ export const Employee = () => {
             })
     }
     const handleSubmite = () => {
+        
         const url = `http://${ipadresse}:5001/add_user`
         const Credentials = { fullName, email, phoneNumber, address ,NomUtil,password,Role}
         axios.post(url, Credentials)
             .then(response => {
                 const result = response.data;
                 const { status, message, data } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
             })
+            
+              
     }
-    
+    const emailValidator = email => {
+        const emailRegex = /^[^\s@]+@[^\s@]+$/;
+        return emailRegex.test(email)
+    }
     const handleEdit = () =>{
         const url = `http://${ipadresse}:5001/EDIT_USER/${id}`
         const Credentials = { fullName, email, phoneNumber, address }
@@ -72,9 +84,13 @@ export const Employee = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -87,11 +103,11 @@ export const Employee = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                if (status !== 'SUCCESS') {
-                    alert(message, status)
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
                 }
                 else {
-                    alert(message)
+                    alert("Succès")
                     window.location.reload()
                 }
             })
@@ -99,7 +115,11 @@ export const Employee = () => {
                 console.log(err)
             })
     }
-    //call this function in useEffect
+    const handleEmail=()=>{
+        if (!emailValidator(email)) return seterrorMessage('Please enter valid email id');
+        if (emailValidator(email)) return seterrorMessage('');
+
+    }    //call this function in useEffect
     console.log(ViewShow, RowData)
     useEffect(() => {
         GetEmployeeData();
@@ -151,7 +171,7 @@ export const Employee = () => {
                                     <td style={{ minWidth: 190 }}>
                                         
                                         <Button size='sm' variant='dark' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id),setfullName(RowData.fullName),setemail(RowData.Email),setaddress(RowData.address),setphoneNumber(RowData.phoneNumber),setNomUtil(RowData.NomUtil),setpassword(RowData.password))}}>Modifier</Button>|
-                                        <Button size='sm' variant='dark' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>|
+                                        <Button size='sm' variant='dark' onClick={() => {handleDeleteShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
                                     </td>
                                 </tr>
                             )}
@@ -171,6 +191,8 @@ export const Employee = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <div>
+                        {errorMessage.length > 0 && <div style={{ marginBottom: '10px', color: 'red' }}>{errorMessage}</div>}
+
                             <div className='form-group'>
                                 <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Nom et prénom" />
                             </div>
@@ -178,7 +200,8 @@ export const Employee = () => {
                                 <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Email" />
                             </div>
                             <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Numéro téléphone" />
+                                <input type="text" className='form-control' onChange={(e) =>         handleEmail(
+setphoneNumber(e.target.value))} placeholder="Numéro téléphone" />
                             </div>
                            
                             <div className='form-group mt-3'>
@@ -193,7 +216,7 @@ export const Employee = () => {
 
                             <div className='form-group mt-3'>
                             <b> Rôle</b> : <br></br>
-                                <input type="radio" value="Admin"  style={{marginLeft:"80px"}} onChange={(e) => setRole(e.target.value)}/><b>Admin</b> 
+                                <input type="radio" value="App"  style={{marginLeft:"80px"}} onChange={(e) => setRole(e.target.value)}/><b>Admin</b> 
                                 <input type="radio" value="Employé"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Agent de comptoire</b>
                                 <input type="radio" value="Cassier"  style={{marginLeft:"20px"}} onChange={(e) => setRole(e.target.value)}/><b>Cassier</b>
 
@@ -254,7 +277,59 @@ export const Employee = () => {
                     </Modal.Footer>
                 </Modal>
             </div>
-        </div>
+
+<div className='model-box-view'>
+<Modal
+    show={ViewDelete}
+    onHide={hanldeDeleteClose}
+    backdrop="static"
+    keyboard={false}
+    size={"lg"}
+>
+    <Modal.Header closeButton>
+        <Modal.Title>
+            Supprimer Employé
+        </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+    <div>
+                            <div className='form-group'>
+                                <label>Nom et Prénom</label>
+                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
+                            </div>
+                            <div className='form-group mt-3'>
+                                <label>Email</label>
+                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
+                            </div>
+                            <div className='form-group mt-3'>
+                                <label>Numéro de téléphone</label>
+                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
+                            </div>
+                           
+                            <div className='form-group mt-3'>
+                                <label>Addresse</label>
+                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
+                                </div>
+                                <div className='form-group mt-3'>
+                                <label>Nom utilisateur</label>
+                                <input type="text" className='form-control' onChange={(e) => setNomUtil(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.NomUtil}/>
+                                </div>
+                                <div>
+                                <label>Mot de passe</label>
+                                <input type="text" className='form-control' onChange={(e) => setpassword(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
+                            </div>
+                            </div>
+                            
+    </Modal.Body>
+    <Modal.Footer>
+    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Supprimer</Button>
+
+        <Button variant='warning' style={{marginTop:"25px"}}onClick={hanldeDeleteClose}>Fermer</Button>
+    </Modal.Footer>
+</Modal>
+</div>
+</div>
+
     );
 };
 

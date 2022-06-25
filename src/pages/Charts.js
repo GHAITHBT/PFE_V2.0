@@ -3,10 +3,9 @@ import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 
 import { useState,useEffect } from "react";
 import "../App.css";
-import BarChart from "../components/BarChart";
-import LineChart from "../components/LineChart";
-import PieChart from "../components/PieChart";
-import { UserData } from "./Data";
+import BarChart from "../components/charts/BarChart";
+import LineChart from "../components/charts/LineChart";
+import PieChart from "../components/charts/PieChart";
 import axios from 'axios';
 
 export const Chart=()=> {

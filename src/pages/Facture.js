@@ -83,10 +83,10 @@ export const Facture = () => {
     /************************************************************************************************************/
     const FilterNumCom = () => {
         if(filter.length==0){
-            GetEmployeeData()
+            GetFactures()
         }
         else{
-    setData(Data.filter(dt=>dt.NumCom.includes(`${filter}`)))
+    setData(Data.filter(dt=>dt.NumFact.includes(`${filter}`)))
        
         }
         
@@ -95,7 +95,7 @@ export const Facture = () => {
 /********************************************************************************************************/
 const FilterDate = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        GetFactures()
     }
     else{
 setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
@@ -107,10 +107,10 @@ setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
 /********************************************************************************************************/
 const FilterEtat = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        GetFactures()
     }
     else{
-setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
+setData(Data.filter(dt=>dt.NomCL.includes(`${filter}`)))
    
     }
     
@@ -161,7 +161,7 @@ const GetClient = () => {
                 console.log(err)
             })
         }
-    const GetEmployeeData = () => {
+    const GetFactures = () => {
         //here we will get all employee data
         const url = `http://${ipadress}:5001/Factures`
         axios.get(url)
@@ -183,9 +183,13 @@ const GetClient = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -198,9 +202,13 @@ const GetClient = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message, data } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -227,9 +235,13 @@ Articles.forEach(element => {
                 .then(response => {
                     const result = response.data;
                     const { status, message } = result;
-                    
+                    if ( response.status !== 200) {
+                        alert("quelque chose s'est mal passé")
+                    }
+                    else {
+                        alert("Succès")
                         window.location.reload()
-                    
+                    }
                 })
                 .catch(err => {
                     console.log(err)
@@ -293,7 +305,7 @@ Articles.forEach(element => {
         GetClient()
         GetArticles()
         Getfour()
-        GetEmployeeData();
+        GetFactures();
         setNumFact( Math.floor(Math.random() * 9999999).toString())
     }, [])
     return (
@@ -518,7 +530,7 @@ Articles.forEach(element => {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeDeleteClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeDeleteClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -756,7 +768,7 @@ Articles.forEach(element => {
                     <Modal.Footer>
                     <Button className='btn btn-success mt-4' onClick={FactADD}> Valider</Button>
 
-                        <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Close</Button>
+                        <Button variant='warning' onClick={hanldePostCloseBL}style={{marginTop:"25px"}}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
                 </div>

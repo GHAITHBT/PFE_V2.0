@@ -446,6 +446,17 @@ app.post('/add_CAISSE',(req,res)=>{
       }
       )
       })
+      app.put('/EDIT_BC/:id',(req,res)=>{
+        db.collection('Commande').updateMany({_id:ObjectID(req.params.id)},
+        {$set:{...req.body}},(err,data)=>{
+           if(err)
+           {res.send('Cannot update contact')
+           console.log(err)}
+           else
+           res.send('Contact updated')
+        }
+        )
+        })
   app.put('/QNT/:CA/:FR',(req,res)=>{
     db.collection('Fournisseur').updateOne({CodeArticle:req.params.CA,fournisseur:req.params.FR},
     {$set:{...req.body}},(err,data)=>{
@@ -480,6 +491,16 @@ app.post('/add_CAISSE',(req,res)=>{
 })
  app.delete('/delete_Article/:id',(req,res)=>{
   db.collection('Article').remove({_id:ObjectID(req.params.id)},(err,data)=>{
+      if(err)
+  {res.send('Cannot delete contact')
+  console.log(err)}
+  else
+  res.send('Contact deleted')
+      
+  })
+})
+app.delete('/delete_FR/:id',(req,res)=>{
+  db.collection('Fournisseur').remove({_id:ObjectID(req.params.id)},(err,data)=>{
       if(err)
   {res.send('Cannot delete contact')
   console.log(err)}

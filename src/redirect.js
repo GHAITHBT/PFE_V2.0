@@ -1,17 +1,8 @@
 import React from 'react';
-import Navbar from './components/NavigationBar';
 import { BrowserRouter as Router, Switch, Route,Redirect } from 'react-router-dom';
-import {Article} from './pages/Article';
-import {Caisse} from './pages/caisse';
-import {Clients} from './pages/Clients'
-import {Employee} from './pages/Liste_employé'
-import FeaturedInfo from './components/FeaturedInfo';
-import {Chart} from './pages/Charts'
-import PrintBS from './pages/PRINTFACT';
-import {BL} from'./pages/Bon_Livraison'
-import {CM} from './pages/commande'
+import {Caisse_emp} from './pages/caisse_emp';
+
 import Login1 from './Login'
-import { Facture } from './pages/Facture';
 import App from './App'
 import EMPINTER from './Employé';
 function Redir() {
@@ -27,7 +18,7 @@ function Redir() {
 
       <Route path='/Employé' component={EMPINTER} />
 
-      <Route path='/Cassier' component={Caisse} />
+      <Route path='/Cassier' component={Caisse_emp} />
       </Switch>
       </Router>
    

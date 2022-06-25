@@ -1,10 +1,7 @@
 import React, { useEffect, useState,useRef,Component } from 'react';
 import { Button, Modal, ModalTitle,Table } from 'react-bootstrap'
 import axios from 'axios'
-import Toolbar from '../Toolbar/Toolbar';
-import ReactToPrint from "react-to-print";
-import BarChart from "../components/BarChart";
-import { UserData } from "./Data";
+
 
 export const Article = () => {
     var ipadresse="localhost"
@@ -95,12 +92,7 @@ const [fullscreen, setFullscreen] = useState(true);
     const [DescriptionBS, setDescriptionBS] = useState("")
   
     
-    //Id for update record and Delete
-    const [idFour,setIdFour] = useState("");
-
-    const ArticleBL = function(CodeArticle, Description,PrixAchat,Quantité) {
-        
-        return {CodeArticle, Description,PrixAchat,Quantité}}
+    
    /************************************************************************************************************/
     /************************************************************************************************************/
     function GetArticlebyid ()  {
@@ -158,67 +150,6 @@ const [fullscreen, setFullscreen] = useState(true);
     }
 /************************************************************************************************************/
  
-   /************************************************************************************************************/
-   /********************************************************************************************************/        
-   function GetQnt  ()  {
-    //here we will get all employee data
-    const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA_Qnt
-    //Qnt=0
-    axios.get(url)
-        .then(response => {
-            const result = response.data;
-            result.reduce((Qntt,result)=>Qntt+result.Qnt,0)
-            console.log("qnt",Qntt)
-            for (let index = 0; index < result.length; index++) {
-                const element = result[index];
-                //Qnt=parseInt(Qnt+parseInt(element.Qnt))
-                
-                
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        
-}
-/************************************************************************************************************/   
-
- function GetFournisseurDataByName  ()  {
-    //here we will get all employee data
-    const url = `http://${ipadresse}:5001/FournisseurByName/`+fournisseur
-    axios.get(url)
-        .then(response => {
-            const result = response.data;
-            
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        
-}
-/************************************************************************************************************/
-function GetFournisseurDataByRef  ()  {
-    //here we will get all employee data
-    const url = `http://${ipadresse}:5001/FournisseurByRef/`+Réference
-    axios.get(url)
-        .then(response => {
-            const result = response.data;
-            setfournisseur(result.fournisseur)
-            setRéference(result.Réference)
-            setAdresse(result.Adresse)
-            setTéléphone(result.Téléphone)
-            console.log('GetFournisseurDataByRef')
-            console.log(fournisseur)
-            console.log(Réference)
-            console.log(Adresse)
-            console.log(Téléphone)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        
-}
-/************************************************************************************************************/ 
   /************************************************************************************************************/
         const AddBS = () => {
             const url = `http://${ipadresse}:5001/add_BS`
@@ -244,31 +175,7 @@ function GetFournisseurDataByRef  ()  {
             
 /************************************************************************************************************/
 /************************************************************************************************************/
-        const GetDataBS = () => {
-            //here we will get all employee data
-            const url = `http://${ipadresse}:5001/BS/${CodeArticle}/${Réference}`
-            const urlG = `http://${ipadresse}:5001/BS`
-            
-        
-            axios.get(url)
-                .then(response => {
-                    const result = response.data;
-                
-                setCodeArticle(result.CodeArticle)
-                setfournisseur(result.fournisseur)
-                setCodeArticle(result.Quantité)
-                })
-                AddBS()
-             axios.get(urlG)
-                .then(response => {
-                setDataBS(response.data)
-                    console.log(DataBS)
-            })
-
-                }
-/************************************************************************************************************/
- /************************************************************************************************************/
- /********************************************************************************************************/        
+               
  function GetFournisseurData  ()  {
     //here we will get all employee data
     const url = `http://${ipadresse}:5001/Fournisseur/`+CodeA
@@ -299,9 +206,13 @@ function GetFournisseurDataByRef  ()  {
             .then(response => {
                 const result = response.data;
                 const { status, message, data } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -317,32 +228,20 @@ function GetFournisseurDataByRef  ()  {
             .then(response => {
                 const result = response.data;
                 const { status, message, data } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
             })
         handleSubmite()}
     /************************************************************************************************************/
-    /************************************************************************************************************/
-    const BLADD = () => {
-        const url = `http://${ipadresse}:5001/add_BL`
-        const Credentials = { NUMBL,DateBL,fournisseur, Réference,Adresse, Téléphone,Articles}
-        axios.post(url, Credentials)
-            .then(response => {
-                const result = response.data;
-                const { status, message, data } = result;
-                
-                    window.location.reload()
-                
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
- /************************************************************************************************************/
+    
 /****************************************************************************************************/            
     const handleEditFOUR = () =>{
         const url = `http://${ipadresse}:5001/EDITFOUR/${id}`
@@ -351,9 +250,13 @@ function GetFournisseurDataByRef  ()  {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -369,9 +272,13 @@ function GetFournisseurDataByRef  ()  {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             
             .catch(err => {
@@ -385,23 +292,7 @@ function GetFournisseurDataByRef  ()  {
                     const { status, message } = result;})
     }
     /************************************************************************************************************/
-    /************************************************************************************************************/
-    const handleBL = () =>{
-        const url = `http://1${ipadresse}:5001/BL/${Réference}/${CodeArticle}`
-        const Credentials = { CodeArticle, Réference, PrixAchat, PrixVente, Quantité }
-        axios.put(url, Credentials)
-            .then(response => {
-                const result = response.data;
-                const { status, message } = result;
-                
-                    window.location.reload()
-                
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-/************************************************************************************************************/
+    
 /************************************************************************************************************/   
  const handleDelete = () =>{
         const url = `http://${ipadresse}:5001/delete_Article/${id}`
@@ -409,33 +300,38 @@ function GetFournisseurDataByRef  ()  {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
             })
     }
 /************************************************************************************************************/
+const handleDeletefr = () =>{
+    const url = `http://${ipadresse}:5001/delete_FR/${id}`
+    axios.delete(url)
+        .then(response => {
+            const result = response.data;
+            const { status, message } = result;
+            if ( response.status !== 200) {
+                alert("quelque chose s'est mal passé")
+            }
+            else {
+                alert("Succès")
+                window.location.reload()
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 /************************************************************************************************************/
-    const handleDeleteBS = () =>{
-        const url = `http://${ipadresse}:5001/BSDELETE/`
-        axios.delete(url)
-            .then(response => {
-                const result = response.data;
-                const { status, message } = result;
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-    //call this function in useEffect
-    //console.log(ViewShow, RowData)
-   
-    
-       
-    
     useEffect(() => {
         GetArticles();
        // GetFournisseurData()
@@ -519,7 +415,7 @@ function GetFournisseurDataByRef  ()  {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>View Employee Data</Modal.Title>
+                        <Modal.Title>Supprimer Article</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -529,25 +425,17 @@ function GetFournisseurDataByRef  ()  {
                             <div className='form-group mt-3'>
                                 <input type="email" className='form-control' value={RowData.Description} readOnly />
                             </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData._id} readOnly />
-                            </div>
                             
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.address} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.password} readOnly />
-                            </div>
-                            {
-                                Delete && (
-                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Delete Employee</Button>
-                                )
-                            }
+                            
+                            
+                               
+                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Supprimer</Button>
+                        
+                            
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeViewClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -670,152 +558,6 @@ function GetFournisseurDataByRef  ()  {
 {/*****************************************************************************************************************/} 
 
 {/*****************************************************************************************************************/}
-
-{/*<div className='model-box-view'>
-                <Modal
-                    show={ViewPostBL}
-                    onHide={hanldePostCloseBL}
-                    backdrop="static"
-                    keyboard={false}
-                  //  fullscreen={true}     
-                    size={"lg"}                  >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Recherche Article</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div>
-                        <div className='form-group mt-3'>
-                            <b> Recherche par</b> : <br></br>
-                                <input type="radio" value="CodeArticle"  style={{marginLeft:"150px"}} onChange={(e) => setTypeRecherche(e.target.value)}/><b> Code Article</b> 
-                                <input type="radio" value="Désignation"  style={{marginLeft:"20px"}} onChange={(e) => setTypeRecherche(e.target.value)}/><b> Déseignation</b><br/><br/>
-                                <input type="text" className='form-control' onChange={(a) => setRéference(a.target.value)} placeholder="Réference" />
-                            </div>
-                <div className='table-responsive'>
-                    <table className='table table-striped table-hover table-bordered'>
-                        <thead>
-                            <tr>
-                                <th >Code Article</th>
-                                <th >Description</th>
-                                <th>Quantité Stock</th>
-                                <th>Vente</th>
-                                <th>Fournisseur</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Data?.map((item) =>
-                                <tr key={item._id}>
-                                    <td>{item.CodeArticle}</td>
-                                    <td>{item.Description}</td>
-                                 
-                                    <td align='center'> <Button id='aj' size='sm' variant='dark'
-                                     onClick={()=> {handleListQntFour( SetRowData(item),idtest=item._id,console.log('id',idtest),GetArticlebyid())}}>
-                                         Afficher </Button></td>
-                                      
-                                    
-                                    <td>{item.Description}</td>
-
-                                    <td align='center'> <Button id='aj' size='sm' variant='dark'
-                                     onClick={()=> {handleListFour( SetRowData(item),idtest=item._id,console.log('id',idtest),GetArticlebyid())}}>
-                                         Afficher les fournisseurs</Button></td>
-
-
-                                    <td style={{ minWidth: 190 }}>
-                                       <center>
-                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditFOUR(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>
-                                        </center>
-                                    </td>
-                                    
-                                </tr>
-                            )}
-                        </tbody>
-                        
-                    </table>
-                   
-                </div>
-                            <Button type='submit' className='btn btn-success mt-4' onClick={BLADD}> Valider</Button>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldePostCloseBL}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-                </div>
-                            */}
-                                  
-{/*****************************************************************************************************************/} 
-
-{/*****************************************************************************************************************/}
-
-<div className='model-box-view'>
-                <Modal
-                    show={ViewPostBS}
-                    onHide={hanldePostCloseBS}
-                    backdrop="static"
-                    keyboard={false}
-                    size='lg'
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Bon de sortie</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div>
-                            <div className='form-group'>
-                                <input type="text" className='form-control' onChange={(a) => setCodeArticle(a.target.value)} placeholder="Code Article" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="email" className='form-control' onChange={(a) => setRéference(a.target.value)} placeholder="Réference Fournisseur" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(a) => setPrixAchat(a.target.value)} placeholder="Prix Achat" />
-                            </div>
-                           
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(a) => setPrixVente(a.target.value)} placeholder="Quantité" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(a) => setPrixVente(a.target.value)} placeholder="Quantité" />
-                            </div>
-                           
-                          
-                        
-                            <tbody>
-                            {DataBS.map((item) =>
-                                <tr key={item._id}>
-                                    <td>{item.CodeArticle}</td>
-                                    <td>{item.Description}</td>
-                                    <td>{item.fournisseur}</td>
-                                    <td>{item.Quantité}</td>
-                                    
-                                    <td>
-                                        
-                    
-                                        <Button size='sm' variant='danger' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' onChange={(a) => setDate(a.target.value)} placeholder="Date" />
-                            </div>
-                           
-                            <Button type='submit' className='btn btn-success mt-4' onClick={GetDataBS}> ADD</Button>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <div>
-        
-      </div>
-                    <Button type='submit' className='btn btn-success mt-4' onClick={handleDeleteBS}> Valider</Button>
-
-                        <Button variant='secondary' onClick={hanldePostCloseBS}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-                       
-                </div>
-
-                
 {/*****************************************************************************************************************/} 
 
            {/* Modal for Edit employee record */}
@@ -827,7 +569,7 @@ function GetFournisseurDataByRef  ()  {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Modifier ART</Modal.Title>
+                        <Modal.Title>Modifier Article</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -936,7 +678,7 @@ function GetFournisseurDataByRef  ()  {
                                     <td>{item.Téléphone}</td>
                                     <td>
                                         <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
-                                        <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
+                                        <Button size='sm' variant='dark' onClick={() => {handleDeleteShow(SetRowData(item),setId(item._id))}}>Supprimer</Button>
                                     </td>
                                 </tr>
                             )}
@@ -998,43 +740,50 @@ function GetFournisseurDataByRef  ()  {
                        
                 </div>
 
+                <div className='model-box-view'>
+<Modal
+    show={ViewDelete}
+    onHide={hanldeDeleteClose}
+    backdrop="static"
+    keyboard={false}
+    size={"lg"}
+>
+    <Modal.Header closeButton>
+        <Modal.Title>
+            Supprimer Fournisseur
+        </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+    <div>
+                            <div className='form-group'>
+                                <input type="text" className='form-control' value={RowData.fournisseur} />
+                            </div>
+                            <div className='form-group mt-3'>
+                                <input type="email" className='form-control' value={RowData.Matricule}/>
+                            </div>
+                            <div className='form-group mt-3'>
+                                <input type="email" className='form-control'value={RowData.Réference}/>
+                            </div>
+                           
+                           
+                            <div className='form-group mt-3'>
+                                <input type="text" className='form-control' value={RowData.Téléphone}/>
+                            </div>
+                            
+                            
+                        </div>
+ 
+                            
+    </Modal.Body>
+    <Modal.Footer>
+    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDeletefr}>Supprimer</Button>
+
+        <Button variant='warning' onClick={hanldeDeleteClose}>Close</Button>
+    </Modal.Footer>
+</Modal>
+</div>
                 
 {/*****************************************************************************************************************/} 
   </div> 
     );
 };
-
-/*<td>
-                <Table table table-striped table-hover table-bordered variant='dark'>
-                        <thead>
-                        
-                            <tr>
-                            
-                                <th>Fournisseur</th>
-                                <th>Réference</th>
-                                <th>Prix Achat</th>
-                                <th>Prix Vente</th>
-                                <th>Quantité</th>
-                                <th>Vente</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {DataFour.map((item) =>
-                                <tr key={item._id}>
-                                    <td>{item.fournisseur}</td>
-                                    <td>{item.Réference}</td>
-                                    <td>{item.PrixAchat}</td>
-                                    <td>{item.PrixVente}</td>
-                                    <td>{item.Quantité}</td>
-                                    <td>Working on it</td>
-                                    
-                                    <td style={{ minWidth: 190 }}>
-                                        
-                                        <Button size='sm' variant='warning' onClick={()=> {handleEditShowFR(SetRowData(item),setId(item._id))}}>Edit</Button>|
-                                        <Button size='sm' variant='danger' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Delete</Button>|
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </Table></td> */

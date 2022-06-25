@@ -65,7 +65,7 @@ export const BL = () => {
     /************************************************************************************************************/
     const FilterNUMBL = () => {
         if(filter.length==0){
-            GetEmployeeData()
+            Getdatabl()
         }
         else{
     setData(Data.filter(dt=>dt.NUMBL.includes(`${filter}`)))
@@ -78,7 +78,7 @@ export const BL = () => {
 /********************************************************************************************************/
 const FilterDateBl = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        Getdatabl()
     }
     else{
 setData(Data.filter(dt=>dt.DateBL.includes(`${filter}`)))
@@ -91,7 +91,7 @@ setData(Data.filter(dt=>dt.DateBL.includes(`${filter}`)))
 /********************************************************************************************************/
 const FilterDateCreation = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        Getdatabl()
     }
     else{
 setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
@@ -104,7 +104,7 @@ setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
 /********************************************************************************************************/
 const FilterFournisseur = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        Getdatabl()
     }
     else{
 setData(Data.filter(dt=>dt.fournisseur.includes(`${filter}`)))
@@ -117,7 +117,7 @@ setData(Data.filter(dt=>dt.fournisseur.includes(`${filter}`)))
 /********************************************************************************************************/
 const FilterRéference = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        Getdatabl()
     }
     else{
 setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
@@ -128,7 +128,7 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
 }
 /************************************************************************************************************/
 /********************************************************************************************************/
-    const GetEmployeeData = () => {
+    const Getdatabl = () => {
         //here we will get all employee data
         const url = `http://${ipadresse}:5001/BLLIST`
         axios.get(url)
@@ -165,9 +165,13 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -179,9 +183,13 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -239,7 +247,7 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
         }
     console.log(ViewShow, RowData)
     useEffect(() => {
-        GetEmployeeData();
+        Getdatabl();
     }, [])
     return (
         <div>
@@ -479,34 +487,34 @@ setData(Data.filter(dt=>dt.Réference.includes(`${filter}`)))
                             </td>
                             <td> 
                                 <b>Date</b>
-                           <input type="text" className='form-control'  placeholder="Date" defaultvalue={RowData.DateBL}   />
+                           <input type="text" className='form-control'  placeholder="Date" defaultValue={RowData.DateBL}   />
                        
                             </td>
                             </tr>
                             
                             <td colSpan={2}>
                            <b> Fournisseur</b>
-                            <input type="text" className='form-control' defaultvalue={RowData.fournisseur}  placeholder="Fournisseur"   onChange={(e) => setfournisseur(e.target.value)} />
+                            <input type="text" className='form-control' defaultValue={RowData.fournisseur}  placeholder="Fournisseur"   onChange={(e) => setfournisseur(e.target.value)} />
                             </td>
                        <tr>
                        
                           
                             <td colSpan={2}>
                               <b>  Réference </b>
-                           <input type="email" className='form-control' defaultvalue={RowData.Réference}  placeholder="Réference"  onChange={(e) => setRéference(e.target.value)}  />
+                           <input type="email" className='form-control' defaultValue={RowData.Réference}  placeholder="Réference"  onChange={(e) => setRéference(e.target.value)}  />
                            </td>
                        </tr>
                        <tr>
                            
                            <td colSpan={2}>
                               <b> Adresse</b>
-                           <input type="email" className='form-control'  defaultvalue={RowData.Adresse} placeholder="Adresse"  onChange={(e) => setAdresse(e.target.value)}  />
+                           <input type="email" className='form-control'  defaultValue={RowData.Adresse} placeholder="Adresse"  onChange={(e) => setAdresse(e.target.value)}  />
                     </td>
                    </tr>
                        <tr>
                            
                            <td colSpan={2}> <b>Numéro Téléphone</b>
-                           <input type="text" className='form-control'  defaultvalue={RowData.Téléphone} placeholder="Téléphone"  onChange={(e) => setTéléphone(e.target.value)}  /></td>
+                           <input type="text" className='form-control'  defaultValue={RowData.Téléphone} placeholder="Téléphone"  onChange={(e) => setTéléphone(e.target.value)}  /></td>
                            </tr>
                            </Table>
                            <Table>

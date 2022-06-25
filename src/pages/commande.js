@@ -64,7 +64,7 @@ export const CM = () => {
     /************************************************************************************************************/
     const FilterNumCom = () => {
         if(filter.length==0){
-            GetEmployeeData()
+            GetdataCom()
         }
         else{
     setData(Data.filter(dt=>dt.NumCom.includes(`${filter}`)))
@@ -77,7 +77,7 @@ export const CM = () => {
 /********************************************************************************************************/
 const FilterDate = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        GetdataCom()
     }
     else{
 setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
@@ -90,7 +90,7 @@ setData(Data.filter(dt=>dt.date.includes(`${filter}`)))
 /********************************************************************************************************/
 const FilterEtat = () => {
     if(filter.length==0){
-        GetEmployeeData()
+        GetdataCom()
     }
     else{
 setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
@@ -102,7 +102,7 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
 /************************************************************************************************************/
 /********************************************************************************************************/
 
-    const GetEmployeeData = () => {
+    const GetdataCom = () => {
         //here we will get all employee data
         const url = `http://${ipadress}:5001/COMLIST`
         axios.get(url)
@@ -137,9 +137,28 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
         const print=()=>{
             history.push("/PrintBC")
            }
+           const handleEdit = () =>{
+            const url = `http://${ipadress}:5001/EDIT_BC/${id}`
+            const Credentials = {  Etat }
+            axios.put(url, Credentials)
+                .then(response => {
+                    const result = response.data;
+                    const { status, message } = result;
+                    if ( response.status !== 200) {
+                        alert("quelque chose s'est mal passé")
+                    }
+                    else {
+                        alert("Succès")
+                        window.location.reload()
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     console.log(ViewShow, RowData)
     useEffect(() => {
-        GetEmployeeData();
+        GetdataCom();
         setNumCOM( Math.floor(Math.random() * 9999999).toString())
     }, [])
     return (
@@ -312,32 +331,14 @@ setData(Data.filter(dt=>dt.Etat.includes(`${filter}`)))
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Employee</Modal.Title>
+                        <Modal.Title>Modifier etat bon</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
-                            <div className='form-group'>
-                                <label>Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData._id}/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Email</label>
-                                <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.date} readOnly/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Number</label>
-                                <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
-                            </div>
+                        <input type="radio" value="En Cours"  style={{marginLeft:"50px"}} onChange={(e) => setEtat(e.target.value)}/><b>Commande en Cours</b> <br></br>
+                        <input type="radio" value="Expidée"  style={{marginLeft:"50px"}} onChange={(e) => setEtat(e.target.value)}/><b>Commande Expidée</b><br></br>
                            
-                            <div className='form-group mt-3'>
-                                <label>Address</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
-                                </div>
-                                <div>
-                                <label>password</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
-                            </div>
-                            <Button type='submit' className='btn btn-warning mt-4'>Edit Employee</Button>
+                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Employee</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

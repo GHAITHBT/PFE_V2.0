@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { emailValidator, passwordValidator } from '../components/regexValidator';
 import {useHistory} from "react-router-dom"
 import axios from 'axios'
 const Login = () => {

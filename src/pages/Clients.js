@@ -44,8 +44,6 @@ export const Clients = () => {
             .then(response => {
                 const result = response.data;
                 setData(result)
-
-                   // console.log(parseInt( parseInt(result[0].phoneNumber)+parseInt(result[1].phoneNumber)))
                 
             })
             .catch(err => {
@@ -59,9 +57,13 @@ export const Clients = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message, data } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -75,9 +77,13 @@ export const Clients = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
+                }
+                else {
+                    alert("Succès")
                     window.location.reload()
-                
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -90,11 +96,11 @@ export const Clients = () => {
             .then(response => {
                 const result = response.data;
                 const { status, message } = result;
-                if (status !== 'SUCCESS') {
-                    alert(message, status)
+                if ( response.status !== 200) {
+                    alert("quelque chose s'est mal passé")
                 }
                 else {
-                    alert(message)
+                    alert("Succès")
                     window.location.reload()
                 }
             })
@@ -155,7 +161,7 @@ export const Clients = () => {
                                     
                                     <td style={{ minWidth: 190 }}>
                                         
-                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id))}}>Modifier</Button>|
+                                        <Button size='sm' variant='secondary' onClick={()=> {handleEditShow(SetRowData(item),setId(item._id),setfullName(RowData.fullName),setaddress(RowData.address),setphoneNumber(RowData.phoneNumber),setemail(RowData.email))}}>Modifier</Button>|
                                         <Button size='sm' variant='secondary' onClick={() => {handleViewShow(SetRowData(item),setId(item._id), setDelete(true))}}>Supprimer</Button>
                                     </td>
                                 </tr>
@@ -173,7 +179,7 @@ export const Clients = () => {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>View Employee Data</Modal.Title>
+                        <Modal.Title>Supprimer Client</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -190,18 +196,16 @@ export const Clients = () => {
                             <div className='form-group mt-3'>
                                 <input type="text" className='form-control' value={RowData.address} readOnly />
                             </div>
-                            <div className='form-group mt-3'>
-                                <input type="number" className='form-control' value={RowData.Débit} readOnly />
-                            </div>
+                            
                             {
                                 Delete && (
-                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Delete Employee</Button>
+                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}> Supprimer</Button>
                                 )
                             }
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
+                        <Button variant='warning' onClick={hanldeViewClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -250,12 +254,12 @@ export const Clients = () => {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Employee</Modal.Title>
+                        <Modal.Title>Modifier</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div>
                             <div className='form-group'>
-                                <label>Name</label>
+                                <label>Nom</label>
                                 <input type="text" className='form-control' onChange={(e) => setfullName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.fullName}/>
                             </div>
                             <div className='form-group mt-3'>
@@ -263,23 +267,21 @@ export const Clients = () => {
                                 <input type="email" className='form-control' onChange={(e) => setemail(e.target.value)} placeholder="Please enter email" defaultValue={RowData.email} />
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Number</label>
+                                <label>Téléphone</label>
                                 <input type="text" className='form-control' onChange={(e) => setphoneNumber(e.target.value)} placeholder="Please enter Number" defaultValue={RowData.phoneNumber}/>
                             </div>
                            
                             <div className='form-group mt-3'>
-                                <label>Address</label>
+                                <label>Addresse</label>
                                 <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.address}/>
                                 </div>
-                                <div>
-                                <label>password</label>
-                                <input type="text" className='form-control' onChange={(e) => setaddress(e.target.value)} placeholder="Please enter Address" defaultValue={RowData.password}/>
-                            </div>
-                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Employee</Button>
+                                
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant='secondary' onClick={hanldeEditClose}>Fermer</Button>
+                    <Button  className='btn btn-success mt-4' onClick={handleEdit}>valider</Button>
+
+                        <Button variant='warning' style={{marginTop:"25px"}} onClick={hanldeEditClose}>Fermer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
